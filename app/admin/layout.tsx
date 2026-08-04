@@ -1,26 +1,29 @@
-import Sidebar from "./components/Sidebar";
-import Topbar from "./components/Topbar";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="flex min-h-screen bg-[#090909]">
+  const cookieStore = await cookies();
 
-      <Sidebar />
+  const adminId = cookieStore.get("elite-admin")?.value;
 
-      <div className="flex flex-1 flex-col">
+  if (!adminId) {
+    redirect("/login");
+  }
 
-        <Topbar />
+  const admin = await prisma.admin.findUnique({
+    where: {
+      id: Number(adminId),
+    },
+  });
 
-        <main className="flex-1 p-8">
-          {children}
-        </main>
+  if (!admin || admin.role !== "ADMIN" && admin.role !== "OWNER") {
+    redirect("/login");
+  }
 
-      </div>
-
-    </div>
-  );
+  return <>{children}</>;
 }

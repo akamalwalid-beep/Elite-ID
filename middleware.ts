@@ -7,9 +7,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const adminId = request.cookies.get("elite-admin")?.value;
+  const token = request.cookies.get("elite-admin")?.value;
 
-  if (!adminId) {
+  if (!token) {
     return NextResponse.redirect(
       new URL("/login", request.url)
     );
