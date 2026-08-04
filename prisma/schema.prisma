@@ -8,6 +8,22 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+
+  username     String   @unique
+  passwordHash String
+
+  name         String?
+
+  role         String   @default("ADMIN")
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+
 model Product {
   id          Int      @id @default(autoincrement())
 
@@ -40,6 +56,7 @@ model Product {
   @@index([slug])
 }
 
+
 model Order {
   id             Int      @id @default(autoincrement())
 
@@ -56,6 +73,7 @@ model Order {
 
   items          OrderItem[]
 }
+
 
 model OrderItem {
   id         Int      @id @default(autoincrement())

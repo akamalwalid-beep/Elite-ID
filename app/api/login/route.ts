@@ -1,16 +1,52 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
   try {
     const { username, password } = await req.json();
 
-    if (
-      username !== process.env.ADMIN_USERNAME ||
-      password !== process.env.ADMIN_PASSWORD
-    ) {
+    if (!username || !password) {
       return NextResponse.json(
-        { message: "Invalid credentials" },
-        { status: 401 }
+        {
+          message: "Username and password are required",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const admin = await prisma.admin.findUnique({
+      where: {
+        username,
+      },
+    });
+
+    if (!admin) {
+      return NextResponse.json(
+        {
+          message: "Invalid credentials",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const passwordMatch = await bcrypt.compare(
+      password,
+      admin.passwordHash
+    );
+
+    if (!passwordMatch) {
+      return NextResponse.json(
+        {
+          message: "Invalid credentials",
+        },
+        {
+          status: 401,
+        }
       );
     }
 
@@ -20,7 +56,7 @@ export async function POST(req: Request) {
 
     response.cookies.set({
       name: "elite-admin",
-      value: "authenticated",
+      value: String(admin.id),
       httpOnly: true,
       sameSite: "strict",
       secure: process.env.NODE_ENV === "production",
@@ -29,10 +65,17 @@ export async function POST(req: Request) {
     });
 
     return response;
-  } catch {
+
+  } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
-      { message: "Login failed" },
-      { status: 500 }
+      {
+        message: "Login failed",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }

@@ -7,14 +7,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = request.cookies.get("elite-admin")?.value;
+  const adminId = request.cookies.get("elite-admin")?.value;
 
-  if (!token) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  if (token !== "authenticated") {
-    return NextResponse.redirect(new URL("/login", request.url));
+  if (!adminId) {
+    return NextResponse.redirect(
+      new URL("/login", request.url)
+    );
   }
 
   return NextResponse.next();
