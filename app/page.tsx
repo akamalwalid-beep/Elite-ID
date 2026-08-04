@@ -1,4 +1,6 @@
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
+import Hero from "../components/Hero/Hero";
+import Products from "../components/Products/Products";
 
 export default function Home() {
   return (
@@ -9,6 +11,8 @@ export default function Home() {
       }}
     >
       <Header />
+      <Hero />
+      <Products />
     </main>
   );
 }
