@@ -33,8 +33,6 @@ export default function ProductHeader({
         className={`absolute -right-20 -top-20 h-60 w-60 rounded-full ${theme.glow} blur-[120px] opacity-60`}
       />
 
-      {/* Product Image */}
-
       <div className="relative z-20 flex justify-center pt-8">
 
         <div className="relative h-40 w-40">
@@ -49,8 +47,6 @@ export default function ProductHeader({
         </div>
 
       </div>
-
-      {/* Badges */}
 
       <div className="absolute right-5 top-5 z-30 flex flex-col gap-2">
 
@@ -75,20 +71,14 @@ export default function ProductHeader({
 
       </div>
 
-      {/* Title */}
-
       <div className="relative z-20 mt-5 text-center">
 
         <h2 className="text-3xl font-black">
-
-          {theme.flag} {country.toUpperCase()}
-
+          {country.toUpperCase()}
         </h2>
 
         <p className={`mt-2 text-sm font-semibold tracking-[0.25em] uppercase ${theme.accent}`}>
-
           Premium Apple ID
-
         </p>
 
       </div>

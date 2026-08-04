@@ -9,17 +9,26 @@ export async function PATCH(
     const { id } = await params;
     const body = await request.json();
 
+    const slug = body.title
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-");
+
     const product = await prisma.product.update({
       where: {
         id: Number(id),
       },
       data: {
-        country: body.country,
-        price: body.price,
-        stock: body.stock,
+        title: body.title,
+        slug,
+        country: body.title,
+        price: Number(body.price),
+        currency: body.currency,
+        rating: Number(body.rating),
+        stock: Number(body.stock),
         image: body.image,
         description: body.description,
-        featured: body.featured,
+        featured: Boolean(body.featured),
       },
     });
 

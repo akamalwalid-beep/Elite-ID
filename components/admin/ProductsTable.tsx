@@ -127,13 +127,9 @@ export default function ProductsTable({
 
                     <div>
 
-                      <h3 className="font-bold">
+                      <h3 className="text-lg font-bold">
                         {product.title}
                       </h3>
-
-                      <p className="text-sm text-zinc-500">
-                        {product.country}
-                      </p>
 
                     </div>
 

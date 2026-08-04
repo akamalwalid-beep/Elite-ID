@@ -18,13 +18,9 @@ export default async function Products() {
   return (
     <section className="relative overflow-hidden bg-[#090909] py-28 text-white">
 
-      {/* Background Glow */}
-
       <div className="absolute left-1/2 top-0 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-lime-400/5 blur-[180px]" />
 
       <div className="relative mx-auto max-w-[1700px] px-10">
-
-        {/* Heading */}
 
         <div className="text-center">
 
@@ -43,61 +39,46 @@ export default async function Products() {
 
         </div>
 
-        {/* Statistics */}
-
         <div className="mx-auto mt-16 grid max-w-6xl grid-cols-2 gap-6 lg:grid-cols-4">
 
           <div className="rounded-3xl border border-zinc-800 bg-white/[0.03] p-7 text-center backdrop-blur-xl">
-
             <h3 className="text-4xl font-black text-lime-400">
               {products.length}
             </h3>
-
             <p className="mt-3 text-zinc-400">
               Products
             </p>
-
           </div>
 
           <div className="rounded-3xl border border-zinc-800 bg-white/[0.03] p-7 text-center backdrop-blur-xl">
-
             <h3 className="text-4xl font-black text-lime-400">
               {countries.size}
             </h3>
-
             <p className="mt-3 text-zinc-400">
               Countries
             </p>
-
           </div>
 
           <div className="rounded-3xl border border-zinc-800 bg-white/[0.03] p-7 text-center backdrop-blur-xl">
-
             <h3 className="text-4xl font-black text-lime-400">
               {totalViews.toLocaleString()}
             </h3>
-
             <p className="mt-3 text-zinc-400">
               Views
             </p>
-
           </div>
 
           <div className="rounded-3xl border border-zinc-800 bg-white/[0.03] p-7 text-center backdrop-blur-xl">
-
             <h3 className="text-4xl font-black text-lime-400">
               4.9
             </h3>
-
             <p className="mt-3 text-zinc-400">
               Average Rating
             </p>
-
           </div>
 
         </div>
 
-        {/* Products */}
 
         <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
 
@@ -106,6 +87,8 @@ export default async function Products() {
             <ProductCard
               key={product.id}
               id={product.id}
+              title={product.title}
+              slug={product.slug}
               country={product.country}
               price={Number(product.price)}
               currency={product.currency}

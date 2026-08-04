@@ -29,11 +29,14 @@ export default async function ProductPage({ params }: Props) {
   const formattedProduct = {
     ...product,
     price: Number(product.price),
+    description: product.description ?? "",
   };
 
   return (
     <main className="min-h-screen bg-[#090909] text-white">
+
       <section className="mx-auto max-w-[1700px] px-10 py-14">
+
         <div className="grid gap-12 xl:grid-cols-[650px_1fr_420px]">
 
           <ProductGallery product={formattedProduct} />
@@ -43,9 +46,12 @@ export default async function ProductPage({ params }: Props) {
           <BuyBox product={formattedProduct} />
 
         </div>
+
       </section>
 
+
       <ProductTabs product={formattedProduct} />
+
 
       <RelatedProducts currentId={formattedProduct.id} />
 

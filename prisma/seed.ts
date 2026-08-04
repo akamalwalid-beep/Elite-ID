@@ -6,53 +6,42 @@ async function main() {
   await prisma.product.createMany({
     data: [
       {
+        title: "USA Apple ID",
+        slug: "usa-apple-id",
         country: "USA",
         price: 15,
         currency: "USDT",
-        rating: 5,
+        rating: 4.8,
         featured: true,
-        image: "/images/products/usa.png",
-        description: "Premium USA Apple ID",
+        image: "/images/products/apple.png",
+        description: "Premium USA Apple ID ready for instant delivery.",
         stock: 100,
+        views: 0,
       },
+
       {
+        title: "UK Apple ID",
+        slug: "uk-apple-id",
         country: "United Kingdom",
-        price: 14,
+        price: 20,
         currency: "USDT",
-        rating: 5,
+        rating: 4.7,
         featured: false,
-        image: "/images/products/uk.png",
-        description: "Premium UK Apple ID",
+        image: "/images/products/apple.png",
+        description: "Premium UK Apple ID.",
         stock: 80,
-      },
-      {
-        country: "Canada",
-        price: 13,
-        currency: "USDT",
-        rating: 5,
-        featured: false,
-        image: "/images/products/canada.png",
-        description: "Premium Canada Apple ID",
-        stock: 75,
-      },
-      {
-        country: "Turkey",
-        price: 8,
-        currency: "USDT",
-        rating: 5,
-        featured: false,
-        image: "/images/products/turkey.png",
-        description: "Premium Turkey Apple ID",
-        stock: 120,
+        views: 0,
       },
     ],
   });
-
-  console.log("✅ Products inserted.");
 }
 
 main()
-  .catch(console.error)
-  .finally(async () => {
+  .then(async () => {
     await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
   });

@@ -20,7 +20,20 @@ export default function ProductCard(props: ProductCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   function handleConfirm(quantity: number) {
-    addToCart(props, quantity);
+    addToCart({
+      id: props.id,
+      title: props.title,
+      slug: props.slug,
+      country: props.country,
+      price: props.price,
+      currency: props.currency,
+      rating: props.rating,
+      image: props.image,
+      stock: props.stock,
+      description: props.description,
+      views: props.views,
+      featured: props.featured,
+    });
   }
 
   const inStock = props.stock > 0;
@@ -46,7 +59,6 @@ export default function ProductCard(props: ProductCardProps) {
           hover:shadow-[0_25px_80px_rgba(132,255,0,.18)]
         "
       >
-        {/* Background Glow */}
 
         <div
           className="
@@ -65,8 +77,6 @@ export default function ProductCard(props: ProductCardProps) {
           "
         />
 
-        {/* Shine */}
-
         <div
           className="
             absolute
@@ -78,8 +88,6 @@ export default function ProductCard(props: ProductCardProps) {
             group-hover:translate-x-full
           "
         />
-
-        {/* Border */}
 
         <div
           className="
@@ -130,6 +138,7 @@ export default function ProductCard(props: ProductCardProps) {
           </div>
 
         </div>
+
       </div>
 
       <AddToCartModal

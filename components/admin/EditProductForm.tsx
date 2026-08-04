@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 
 type Product = {
   id: number;
-  country: string;
+  title: string;
   price: number;
   stock: number;
   image: string;
   description: string;
   featured: boolean;
+  rating: number;
+  currency: string;
 };
 
 export default function EditProductForm({
@@ -20,10 +22,9 @@ export default function EditProductForm({
 }) {
   const router = useRouter();
 
-  const [country, setCountry] = useState(product.country);
+  const [title, setTitle] = useState(product.title);
   const [price, setPrice] = useState(product.price);
   const [stock, setStock] = useState(product.stock);
-  const [image, setImage] = useState(product.image);
   const [description, setDescription] = useState(product.description);
   const [featured, setFeatured] = useState(product.featured);
   const [loading, setLoading] = useState(false);
@@ -37,12 +38,14 @@ export default function EditProductForm({
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        country,
+        title,
         price: Number(price),
         stock: Number(stock),
-        image,
+        image: "/images/products/apple.png",
         description,
         featured,
+        rating: product.rating,
+        currency: product.currency,
       }),
     });
 
@@ -53,7 +56,7 @@ export default function EditProductForm({
       return;
     }
 
-    alert("Product updated successfully.");
+    alert("✅ Product Updated");
 
     router.push("/admin/products");
     router.refresh();
@@ -64,12 +67,12 @@ export default function EditProductForm({
 
       <div>
         <label className="mb-2 block text-sm text-zinc-400">
-          Country
+          Product Name
         </label>
 
         <input
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           className="w-full rounded-xl border border-zinc-700 bg-black p-3"
         />
       </div>
@@ -96,18 +99,6 @@ export default function EditProductForm({
           type="number"
           value={stock}
           onChange={(e) => setStock(Number(e.target.value))}
-          className="w-full rounded-xl border border-zinc-700 bg-black p-3"
-        />
-      </div>
-
-      <div>
-        <label className="mb-2 block text-sm text-zinc-400">
-          Image URL
-        </label>
-
-        <input
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
           className="w-full rounded-xl border border-zinc-700 bg-black p-3"
         />
       </div>

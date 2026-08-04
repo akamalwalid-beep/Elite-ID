@@ -3,11 +3,11 @@
 import { useState } from "react";
 
 export default function AddProductPage() {
-  const [country, setCountry] = useState("");
+  const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("USDT");
   const [rating, setRating] = useState("");
-  const [image, setImage] = useState("/images/apple.png");
+  const image = "/images/products/apple.png";
   const [description, setDescription] = useState("");
   const [stock, setStock] = useState("100");
   const [featured, setFeatured] = useState(false);
@@ -21,7 +21,7 @@ export default function AddProductPage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        country,
+        title,
         price: Number(price),
         currency,
         rating: Number(rating),
@@ -35,10 +35,12 @@ export default function AddProductPage() {
     if (res.ok) {
       alert("✅ Product Added");
 
-      setCountry("");
+      setTitle("");
       setPrice("");
       setRating("");
       setDescription("");
+      setStock("100");
+      setFeatured(false);
     } else {
       alert("❌ Error");
     }
@@ -47,6 +49,7 @@ export default function AddProductPage() {
   return (
     <main className="min-h-screen bg-[#090909] p-10 text-white">
       <div className="mx-auto max-w-3xl">
+
         <h1 className="mb-10 text-5xl font-bold">
           Add Product
         </h1>
@@ -55,10 +58,11 @@ export default function AddProductPage() {
           onSubmit={addProduct}
           className="space-y-5"
         >
+
           <input
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            placeholder="Country"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Product Name"
             className="w-full rounded-xl bg-zinc-900 p-4"
           />
 
@@ -82,12 +86,6 @@ export default function AddProductPage() {
             className="w-full rounded-xl bg-zinc-900 p-4"
           />
 
-          <input
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            className="w-full rounded-xl bg-zinc-900 p-4"
-          />
-
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -108,7 +106,6 @@ export default function AddProductPage() {
               checked={featured}
               onChange={(e) => setFeatured(e.target.checked)}
             />
-
             Featured Product
           </label>
 
@@ -117,7 +114,9 @@ export default function AddProductPage() {
           >
             Add Product
           </button>
+
         </form>
+
       </div>
     </main>
   );

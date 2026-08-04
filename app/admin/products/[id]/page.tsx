@@ -21,12 +21,14 @@ export default async function EditProductPage({
 
   const formattedProduct = {
     id: product.id,
-    country: product.country,
+    title: product.title,
     price: Number(product.price),
     stock: product.stock,
     image: product.image,
     description: product.description ?? "",
     featured: product.featured,
+    rating: product.rating,
+    currency: product.currency,
   };
 
   return (

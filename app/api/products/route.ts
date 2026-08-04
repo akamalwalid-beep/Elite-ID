@@ -15,24 +15,25 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const title = `${body.country} Apple ID`;
+    const title = body.title;
 
     const slug = title
       .toLowerCase()
+      .trim()
       .replace(/\s+/g, "-");
 
     const product = await prisma.product.create({
       data: {
         title,
         slug,
-        country: body.country,
-        price: body.price,
+        country: title,
+        price: Number(body.price),
         currency: body.currency,
-        rating: body.rating,
+        rating: Number(body.rating),
         image: body.image,
         description: body.description,
-        stock: body.stock,
-        featured: body.featured,
+        stock: Number(body.stock),
+        featured: Boolean(body.featured),
       },
     });
 

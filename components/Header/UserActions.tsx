@@ -10,8 +10,6 @@ export default function UserActions() {
   return (
     <div className="flex items-center gap-3">
 
-      {/* Cart */}
-
       <Link
         href="/cart"
         className="
@@ -65,9 +63,8 @@ export default function UserActions() {
         )}
       </Link>
 
-      {/* Login */}
-
-      <button
+      <Link
+        href="/login"
         className="
           group
           flex
@@ -91,7 +88,7 @@ export default function UserActions() {
         />
 
         Login
-      </button>
+      </Link>
 
     </div>
   );

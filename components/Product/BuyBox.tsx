@@ -3,17 +3,16 @@
 import { useCart } from "@/context/CartContext";
 
 type BuyBoxProps = {
-  id: number;
-  country: string;
-  price: string;
-  image: string;
+  product: {
+    id: number;
+    title: string;
+    price: number;
+    image: string;
+  };
 };
 
 export default function BuyBox({
-  id,
-  country,
-  price,
-  image,
+  product,
 }: BuyBoxProps) {
   const { addToCart } = useCart();
 
@@ -36,7 +35,10 @@ export default function BuyBox({
         </p>
 
         <h3 className="mt-2 text-5xl font-extrabold text-lime-400">
-          {price}
+          ${product.price}
+          <span className="ml-3 text-sm text-zinc-400">
+            USDT
+          </span>
         </h3>
       </div>
 
@@ -46,7 +48,7 @@ export default function BuyBox({
           Payment Method
         </label>
 
-        <select className="w-full rounded-xl border border-zinc-700 bg-[#181818] p-4 outline-none">
+        <select className="w-full rounded-xl border border-zinc-700 bg-[#181818] p-4">
           <option>USDT (TRC20)</option>
           <option>TRX</option>
           <option>Binance Pay</option>
@@ -57,10 +59,18 @@ export default function BuyBox({
       <button
         onClick={() =>
           addToCart({
-            id,
-            country,
-            price: Number(price.split(" ")[0]),
-            image,
+            id: product.id,
+            title: product.title,
+            slug: "",
+            country: product.title,
+            price: product.price,
+            currency: "USDT",
+            rating: 0,
+            image: product.image,
+            stock: 1,
+            description: "",
+            views: 0,
+            featured: false,
           })
         }
         className="mt-10 w-full rounded-xl bg-lime-400 py-5 text-xl font-bold text-black transition hover:scale-105"
@@ -74,7 +84,6 @@ export default function BuyBox({
           <span className="text-zinc-500">
             Delivery
           </span>
-
           <span>Instant</span>
         </div>
 
@@ -82,7 +91,6 @@ export default function BuyBox({
           <span className="text-zinc-500">
             Warranty
           </span>
-
           <span>Lifetime</span>
         </div>
 
@@ -90,7 +98,6 @@ export default function BuyBox({
           <span className="text-zinc-500">
             Support
           </span>
-
           <span>24 / 7</span>
         </div>
 
