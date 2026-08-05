@@ -1,4 +1,9 @@
-import { Eye, Package, Star, AlertTriangle } from "lucide-react";
+import {
+  Eye,
+  Package,
+  Star,
+  AlertTriangle,
+} from "lucide-react";
 
 type Props = {
   views: number;
@@ -15,96 +20,136 @@ export default function ProductStats({
   const lowStock = stock > 0 && stock <= 5;
 
   return (
-    <div className="relative z-10 mt-7">
+    <div className="relative z-10 mt-7 space-y-4">
+
 
       {/* Views */}
 
-      <div className="flex justify-center">
+      <div
+        className="
+        flex
+        items-center
+        justify-center
+        gap-3
+        rounded-2xl
+        border
+        border-white/10
+        bg-white/[0.04]
+        px-5
+        py-3
+        text-sm
+        text-zinc-300
+        backdrop-blur-xl
+        "
+      >
 
-        <div className="flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900/70 px-4 py-2 text-sm text-zinc-300 backdrop-blur-xl">
+        <Eye
+          size={17}
+          className="text-lime-400"
+        />
 
-          <Eye size={16} className="text-lime-400" />
-
+        <span>
           {views.toLocaleString()} Views
-
-        </div>
+        </span>
 
       </div>
+
+
+
 
       {/* Stock */}
 
-      <div className="mt-5 flex justify-center">
+      <div
+        className={`
+        flex
+        items-center
+        justify-center
+        gap-3
+        rounded-2xl
+        border
+        px-5
+        py-3
+        text-sm
+        font-semibold
+        backdrop-blur-xl
 
-        {inStock ? (
+        ${
+          !inStock
+            ? "border-red-400/20 bg-red-500/10 text-red-400"
+            : lowStock
+            ? "border-orange-400/20 bg-orange-500/10 text-orange-400"
+            : "border-lime-400/20 bg-lime-400/10 text-lime-400"
+        }
+        `}
+      >
 
-          <div
-            className={`
-              flex
-              items-center
-              gap-2
-              rounded-full
-              px-4
-              py-2
-              text-sm
-              font-semibold
-              ${
-                lowStock
-                  ? "bg-orange-500/10 text-orange-400"
-                  : "bg-lime-400/10 text-lime-400"
-              }
-            `}
-          >
-
-            {lowStock ? (
-              <AlertTriangle size={16} />
-            ) : (
-              <Package size={16} />
-            )}
-
-            {lowStock
-              ? `Only ${stock} Left`
-              : `${stock} In Stock`}
-
-          </div>
-
+        {!inStock ? (
+          <AlertTriangle size={17} />
+        ) : lowStock ? (
+          <AlertTriangle size={17} />
         ) : (
-
-          <div className="rounded-full bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-400">
-
-            Out Of Stock
-
-          </div>
-
+          <Package size={17} />
         )}
 
+
+        <span>
+
+          {!inStock
+            ? "Out Of Stock"
+            : lowStock
+            ? `Only ${stock} Left`
+            : `${stock} Available`}
+
+        </span>
+
       </div>
+
+
+
 
       {/* Rating */}
 
-      <div className="mt-6 flex justify-center gap-1">
+      <div
+        className="
+        rounded-2xl
+        border
+        border-white/10
+        bg-white/[0.04]
+        px-5
+        py-4
+        backdrop-blur-xl
+        "
+      >
 
-        {Array.from({ length: 5 }).map((_, index) => (
+        <div className="flex justify-center gap-1">
 
-          <Star
-            key={index}
-            size={18}
-            fill={
-              index < Math.round(rating)
-                ? "#facc15"
-                : "transparent"
-            }
-            className="text-yellow-400"
-          />
+          {Array.from({ length: 5 }).map((_, index) => (
 
-        ))}
+            <Star
+              key={index}
+              size={18}
+              fill={
+                index < Math.round(rating)
+                  ? "#facc15"
+                  : "transparent"
+              }
+              className="text-yellow-400"
+            />
+
+          ))}
+
+        </div>
+
+
+        <p className="mt-2 text-center text-sm text-zinc-400">
+
+          {rating.toFixed(1)} / 5 Rating
+
+        </p>
+
 
       </div>
 
-      <p className="mt-2 text-center text-sm text-zinc-500">
-
-        {rating.toFixed(1)} / 5 Rating
-
-      </p>
 
     </div>
   );

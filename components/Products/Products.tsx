@@ -25,9 +25,73 @@ export default async function Products() {
   return (
     <section className="relative overflow-hidden bg-[#090909] py-28 text-white">
 
-      <div className="absolute left-1/2 top-0 h-[700px] w-[700px] -translate-x-1/2 rounded-full bg-lime-400/5 blur-[180px]" />
+      {/* Moving Premium Background Lights */}
+
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+
+        <div
+          className="
+          absolute
+          -left-52
+          top-10
+          h-[700px]
+          w-[700px]
+          rounded-full
+          bg-lime-400/20
+          blur-[140px]
+          animate-[pulse_7s_ease-in-out_infinite]
+          "
+        />
+
+        <div
+          className="
+          absolute
+          right-[-200px]
+          top-[15%]
+          h-[800px]
+          w-[800px]
+          rounded-full
+          bg-green-400/20
+          blur-[160px]
+          animate-[pulse_9s_ease-in-out_infinite]
+          "
+        />
+
+        <div
+          className="
+          absolute
+          bottom-[-250px]
+          left-[35%]
+          h-[650px]
+          w-[650px]
+          rounded-full
+          bg-lime-300/15
+          blur-[150px]
+          animate-[pulse_8s_ease-in-out_infinite]
+          "
+        />
+
+        <div
+          className="
+          absolute
+          left-1/2
+          top-1/2
+          h-[500px]
+          w-[500px]
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          bg-emerald-400/10
+          blur-[170px]
+          animate-[pulse_11s_ease-in-out_infinite]
+          "
+        />
+
+      </div>
+
 
       <div className="relative mx-auto max-w-[1700px] px-10">
+
 
         <div className="text-center">
 
@@ -35,9 +99,11 @@ export default async function Products() {
             PREMIUM STORE
           </span>
 
+
           <h2 className="mt-8 text-6xl font-black">
             Premium Apple IDs
           </h2>
+
 
           <p className="mx-auto mt-6 max-w-2xl text-xl leading-9 text-zinc-400">
             High-quality Apple IDs for every country with instant
@@ -47,32 +113,40 @@ export default async function Products() {
         </div>
 
 
+
         <div className="mx-auto mt-16 grid max-w-6xl grid-cols-2 gap-6 lg:grid-cols-4">
+
 
           <StatCard
             value={products.length}
             label="Products"
           />
 
+
           <StatCard
             value={countries.size}
             label="Countries"
           />
+
 
           <StatCard
             value={totalViews.toLocaleString()}
             label="Views"
           />
 
+
           <StatCard
             value="4.9"
             label="Average Rating"
           />
 
+
         </div>
 
 
+
         <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+
 
           {products.map((product) => (
 
@@ -94,13 +168,17 @@ export default async function Products() {
 
           ))}
 
+
         </div>
 
+
       </div>
+
 
     </section>
   );
 }
+
 
 
 function StatCard({
@@ -110,17 +188,23 @@ function StatCard({
   value: string | number;
   label: string;
 }) {
+
   return (
+
     <div className="rounded-3xl border border-zinc-800 bg-white/[0.03] p-7 text-center backdrop-blur-xl">
+
 
       <h3 className="text-4xl font-black text-lime-400">
         {value}
       </h3>
 
+
       <p className="mt-3 text-zinc-400">
         {label}
       </p>
 
+
     </div>
+
   );
 }

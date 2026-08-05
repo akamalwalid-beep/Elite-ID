@@ -1,10 +1,6 @@
 export default function HeroStats() {
   const stats = [
     {
-      value: "15K+",
-      label: "Happy Customers",
-    },
-    {
       value: "99.9%",
       label: "Success Rate",
     },
@@ -12,18 +8,15 @@ export default function HeroStats() {
       value: "24/7",
       label: "Support",
     },
-    {
-      value: "120+",
-      label: "Countries",
-    },
   ];
 
   return (
-    <div className="grid gap-6 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl md:grid-cols-4">
+    <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
+
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="text-center"
+          className="rounded-3xl border border-white/10 bg-white/5 p-8 text-center backdrop-blur-xl"
         >
           <h2 className="text-5xl font-black text-lime-400">
             {stat.value}
@@ -34,6 +27,7 @@ export default function HeroStats() {
           </p>
         </div>
       ))}
+
     </div>
   );
 }

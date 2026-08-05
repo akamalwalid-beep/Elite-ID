@@ -25,13 +25,38 @@ export default function ProductHeader({
 
   return (
     <>
-      <div
-        className={`absolute inset-0 bg-gradient-to-br ${theme.gradient}`}
-      />
+
+      {/* Background */}
 
       <div
-        className={`absolute -right-20 -top-20 h-60 w-60 rounded-full ${theme.glow} blur-[120px] opacity-60`}
+        className={`
+        absolute
+        inset-0
+        bg-gradient-to-br
+        ${theme.gradient}
+        `}
       />
+
+
+      {/* Glow */}
+
+      <div
+        className={`
+        absolute
+        -right-20
+        -top-20
+        h-60
+        w-60
+        rounded-full
+        ${theme.glow}
+        blur-[120px]
+        opacity-60
+        `}
+      />
+
+
+
+      {/* Image */}
 
       <div className="relative z-20 flex justify-center pt-8">
 
@@ -41,35 +66,115 @@ export default function ProductHeader({
             src={image}
             alt={country}
             fill
-            className="object-contain transition duration-500 group-hover:scale-110"
+            className="
+            object-contain
+            drop-shadow-[0_20px_40px_rgba(0,0,0,.5)]
+            transition-all
+            duration-700
+            group-hover:scale-105
+            "
           />
 
         </div>
 
       </div>
 
-      <div className="absolute right-5 top-5 z-30 flex flex-col gap-2">
+
+
+
+      {/* Badges */}
+
+      <div
+        className="
+        absolute
+        right-5
+        top-5
+        z-30
+        flex
+        max-w-[120px]
+        flex-col
+        gap-2
+        "
+      >
 
         {featured && (
-          <div className="rounded-full bg-lime-400/10 px-3 py-1 text-xs font-bold text-lime-400 border border-lime-400/30">
-            <Flame size={13} className="inline mr-1" />
+
+          <div
+            className="
+            rounded-full
+            border
+            border-lime-400/30
+            bg-lime-400/10
+            px-3
+            py-1
+            text-xs
+            font-bold
+            text-lime-400
+            backdrop-blur-xl
+            "
+          >
+
+            <Flame
+              size={13}
+              className="mr-1 inline"
+            />
+
             Featured
+
           </div>
+
         )}
+
+
 
         {isTrending && (
-          <div className="rounded-full bg-orange-500/10 px-3 py-1 text-xs font-bold text-orange-400">
+
+          <div
+            className="
+            rounded-full
+            border
+            border-orange-400/20
+            bg-orange-500/10
+            px-3
+            py-1
+            text-xs
+            font-bold
+            text-orange-400
+            "
+          >
             🔥 Trending
           </div>
+
         )}
 
+
+
         {isTopRated && (
-          <div className="rounded-full bg-yellow-500/10 px-3 py-1 text-xs font-bold text-yellow-400">
+
+          <div
+            className="
+            rounded-full
+            border
+            border-yellow-400/20
+            bg-yellow-500/10
+            px-3
+            py-1
+            text-xs
+            font-bold
+            text-yellow-400
+            "
+          >
             ⭐ Top Rated
           </div>
+
         )}
 
       </div>
+
+
+
+
+      {/* Title */}
 
       <div className="relative z-20 mt-5 text-center">
 
@@ -77,11 +182,24 @@ export default function ProductHeader({
           {country.toUpperCase()}
         </h2>
 
-        <p className={`mt-2 text-sm font-semibold tracking-[0.25em] uppercase ${theme.accent}`}>
+
+        <p
+          className={`
+          mt-2
+          text-sm
+          font-semibold
+          uppercase
+          tracking-[0.25em]
+          ${theme.accent}
+          `}
+        >
           Premium Apple ID
         </p>
 
+
       </div>
+
+
     </>
   );
 }
