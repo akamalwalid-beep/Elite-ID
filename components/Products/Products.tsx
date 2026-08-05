@@ -1,11 +1,18 @@
 import ProductCard from "./ProductCard";
 import { prisma } from "../../lib/prisma";
 
+export const revalidate = 30;
+
 export default async function Products() {
   const products = await prisma.product.findMany({
-    orderBy: {
-      featured: "desc",
-    },
+    orderBy: [
+      {
+        featured: "desc",
+      },
+      {
+        createdAt: "desc",
+      },
+    ],
   });
 
   const totalViews = products.reduce(
@@ -39,43 +46,16 @@ export default async function Products() {
 
         </div>
 
+
         <div className="mx-auto mt-16 grid max-w-6xl grid-cols-2 gap-6 lg:grid-cols-4">
 
-          <div className="rounded-3xl border border-zinc-800 bg-white/[0.03] p-7 text-center backdrop-blur-xl">
-            <h3 className="text-4xl font-black text-lime-400">
-              {products.length}
-            </h3>
-            <p className="mt-3 text-zinc-400">
-              Products
-            </p>
-          </div>
+          <StatCard value={products.length} label="Products" />
 
-          <div className="rounded-3xl border border-zinc-800 bg-white/[0.03] p-7 text-center backdrop-blur-xl">
-            <h3 className="text-4xl font-black text-lime-400">
-              {countries.size}
-            </h3>
-            <p className="mt-3 text-zinc-400">
-              Countries
-            </p>
-          </div>
+          <StatCard value={countries.size} label="Countries" />
 
-          <div className="rounded-3xl border border-zinc-800 bg-white/[0.03] p-7 text-center backdrop-blur-xl">
-            <h3 className="text-4xl font-black text-lime-400">
-              {totalViews.toLocaleString()}
-            </h3>
-            <p className="mt-3 text-zinc-400">
-              Views
-            </p>
-          </div>
+          <StatCard value={totalViews.toLocaleString()} label="Views" />
 
-          <div className="rounded-3xl border border-zinc-800 bg-white/[0.03] p-7 text-center backdrop-blur-xl">
-            <h3 className="text-4xl font-black text-lime-400">
-              4.9
-            </h3>
-            <p className="mt-3 text-zinc-400">
-              Average Rating
-            </p>
-          </div>
+          <StatCard value="4.9" label="Average Rating" />
 
         </div>
 
@@ -107,5 +87,28 @@ export default async function Products() {
       </div>
 
     </section>
+  );
+}
+
+
+function StatCard({
+  value,
+  label,
+}: {
+  value: string | number;
+  label: string;
+}) {
+  return (
+    <div className="rounded-3xl border border-zinc-800 bg-white/[0.03] p-7 text-center backdrop-blur-xl">
+
+      <h3 className="text-4xl font-black text-lime-400">
+        {value}
+      </h3>
+
+      <p className="mt-3 text-zinc-400">
+        {label}
+      </p>
+
+    </div>
   );
 }
