@@ -1,7 +1,7 @@
+export const dynamic = "force-dynamic";
+
 import ProductCard from "./ProductCard";
 import { prisma } from "../../lib/prisma";
-
-export const revalidate = 30;
 
 export default async function Products() {
   const products = await prisma.product.findMany({
@@ -49,13 +49,25 @@ export default async function Products() {
 
         <div className="mx-auto mt-16 grid max-w-6xl grid-cols-2 gap-6 lg:grid-cols-4">
 
-          <StatCard value={products.length} label="Products" />
+          <StatCard
+            value={products.length}
+            label="Products"
+          />
 
-          <StatCard value={countries.size} label="Countries" />
+          <StatCard
+            value={countries.size}
+            label="Countries"
+          />
 
-          <StatCard value={totalViews.toLocaleString()} label="Views" />
+          <StatCard
+            value={totalViews.toLocaleString()}
+            label="Views"
+          />
 
-          <StatCard value="4.9" label="Average Rating" />
+          <StatCard
+            value="4.9"
+            label="Average Rating"
+          />
 
         </div>
 
