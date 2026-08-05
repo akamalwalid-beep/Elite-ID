@@ -1,4 +1,4 @@
-import ProductCard from "@/components/Product/ProductCard";
+import ProductCard from "@/components/Products/ProductCard";
 import { prisma } from "@/lib/prisma";
 
 type Props = {
@@ -68,8 +68,6 @@ export default async function RelatedProducts({
       pb-24
       "
     >
-
-      {/* Glow */}
 
       <div
         className="
