@@ -2,10 +2,18 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 
+type OrderItemInput = {
+  productId: number;
+  country: string;
+  price: number;
+  quantity: number;
+};
+
+
+
 export async function POST(req: Request) {
 
   try {
-
 
     const body = await req.json();
 
@@ -33,24 +41,19 @@ export async function POST(req: Request) {
 
 
 
+    const items: OrderItemInput[] = body.items.map(
+      (item: OrderItemInput) => ({
 
-    const items = body.items.map((item: any) => ({
+        productId: Number(item.productId),
 
+        country: String(item.country),
 
-      productId: Number(item.productId),
+        price: Number(item.price),
 
+        quantity: Number(item.quantity),
 
-      country: String(item.country),
-
-
-      price: Number(item.price),
-
-
-      quantity: Number(item.quantity),
-
-
-    }));
-
+      })
+    );
 
 
 
@@ -67,15 +70,14 @@ export async function POST(req: Request) {
 
 
 
-
-    if(invalidItem){
+    if (invalidItem) {
 
       return NextResponse.json(
         {
-          message:"Invalid order items",
+          message: "Invalid order items",
         },
         {
-          status:400,
+          status: 400,
         }
       );
 
@@ -86,14 +88,9 @@ export async function POST(req: Request) {
 
 
 
-
     const total = items.reduce(
 
-      (
-        sum:number,
-        item:any
-      ) =>
-
+      (sum, item) =>
         sum +
         item.price *
         item.quantity,
@@ -108,68 +105,44 @@ export async function POST(req: Request) {
 
 
 
-
-
     const order = await prisma.order.create({
 
-      data:{
-
+      data: {
 
         telegram: body.telegram,
 
-
         whatsapp: body.whatsapp,
 
-
-
-        paymentMethod:
-          body.paymentMethod,
-
-
+        paymentMethod: body.paymentMethod,
 
         total,
 
+        items: {
 
+          create: items.map((item) => ({
 
-        items:{
+            productId: item.productId,
 
+            country: item.country,
 
-          create: items.map((item:any)=>(
+            price: item.price,
 
-            {
+            quantity: item.quantity,
 
-              productId:item.productId,
-
-              country:item.country,
-
-              price:item.price,
-
-              quantity:item.quantity,
-
-            }
-
-          ))
-
+          }))
 
         }
-
 
       },
 
 
+      include: {
 
-      include:{
-
-
-        items:true
-
+        items: true
 
       }
 
-
     });
-
-
 
 
 
@@ -182,19 +155,14 @@ export async function POST(req: Request) {
       order,
 
       {
-        status:201,
+        status: 201,
       }
 
     );
 
 
 
-
-
-
-
-  } catch(error){
-
+  } catch (error) {
 
 
     console.error(
@@ -207,17 +175,15 @@ export async function POST(req: Request) {
     return NextResponse.json(
 
       {
-        message:"Failed to create order",
+        message: "Failed to create order",
       },
 
       {
-        status:500,
+        status: 500,
       }
 
     );
 
-
   }
-
 
 }

@@ -1,6 +1,8 @@
 import { Product } from "../types/product";
 
+
 export const products: Product[] = [
+
   {
     id: 1,
     title: "USA Apple ID",
@@ -9,12 +11,26 @@ export const products: Product[] = [
     price: 2.5,
     currency: "USDT",
     rating: 4.8,
+
     featured: true,
+    topRated: true,
+    bestSeller: true,
+    rare: false,
+
+    features: [
+      "AppStore",
+      "iCloud 5GB",
+      "2FA",
+      "Mailbox",
+    ],
+
     image: "/images/products/apple.png",
     description: "Premium USA Apple ID ready for instant delivery.",
     stock: 250,
     views: 1200,
   },
+
+
 
   {
     id: 2,
@@ -24,12 +40,25 @@ export const products: Product[] = [
     price: 2.7,
     currency: "USDT",
     rating: 4.7,
+
     featured: false,
+    topRated: true,
+    bestSeller: false,
+    rare: false,
+
+    features: [
+      "AppStore",
+      "iCloud 5GB",
+      "2FA",
+    ],
+
     image: "/images/products/apple.png",
     description: "Premium UK Apple ID with secure delivery.",
     stock: 180,
     views: 900,
   },
+
+
 
   {
     id: 3,
@@ -39,12 +68,24 @@ export const products: Product[] = [
     price: 2.6,
     currency: "USDT",
     rating: 4.6,
+
     featured: false,
+    topRated: false,
+    bestSeller: false,
+    rare: true,
+
+    features: [
+      "AppStore",
+      "Mailbox",
+    ],
+
     image: "/images/products/apple.png",
     description: "Verified Canada Apple ID.",
     stock: 150,
     views: 700,
   },
+
+
 
   {
     id: 4,
@@ -54,10 +95,21 @@ export const products: Product[] = [
     price: 1.9,
     currency: "USDT",
     rating: 4.5,
+
     featured: false,
+    topRated: false,
+    bestSeller: true,
+    rare: false,
+
+    features: [
+      "AppStore",
+      "iCloud 5GB",
+    ],
+
     image: "/images/products/apple.png",
     description: "Affordable Turkey Apple ID.",
     stock: 300,
     views: 500,
   },
+
 ];

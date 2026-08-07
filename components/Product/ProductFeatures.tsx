@@ -4,111 +4,83 @@ import { CheckCircle } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 
-export default function ProductFeatures() {
+type Props = {
+  features?: string[];
+};
+
+
+
+export default function ProductFeatures({
+  features = [],
+}: Props) {
 
 
   const { language } = useLanguage();
 
 
 
+  const defaultFeatures = [
 
-  const text = {
-
-
-    title:
-
-      language === "ar"
-
-        ? "المميزات"
-
-        : language === "zh"
-
-        ? "功能"
-
-        : "Features",
+    language === "ar"
+      ? "تسليم فوري"
+      : language === "zh"
+      ? "即时交付"
+      : "Instant Delivery",
 
 
 
-
-
-    features: [
-
-      language === "ar"
-
-        ? "تسليم فوري"
-
-        : language === "zh"
-
-        ? "即时交付"
-
-        : "Instant Delivery",
+    language === "ar"
+      ? "تسجيل دخول آمن"
+      : language === "zh"
+      ? "安全登录"
+      : "Secure Login",
 
 
 
-
-      language === "ar"
-
-        ? "تسجيل دخول آمن"
-
-        : language === "zh"
-
-        ? "安全登录"
-
-        : "Secure Login",
+    language === "ar"
+      ? "ضمان كامل"
+      : language === "zh"
+      ? "完整保修"
+      : "Full Warranty",
 
 
 
-
-      language === "ar"
-
-        ? "ضمان كامل"
-
-        : language === "zh"
-
-        ? "完整保修"
-
-        : "Full Warranty",
+    language === "ar"
+      ? "دعم مدى الحياة"
+      : language === "zh"
+      ? "终身支持"
+      : "Lifetime Support",
 
 
 
+    language === "ar"
+      ? "جاهز للاستخدام"
+      : language === "zh"
+      ? "可立即使用"
+      : "Ready To Use",
 
-      language === "ar"
-
-        ? "دعم مدى الحياة"
-
-        : language === "zh"
-
-        ? "终身支持"
-
-        : "Lifetime Support",
+  ];
 
 
 
-
-      language === "ar"
-
-        ? "جاهز للاستخدام"
-
-        : language === "zh"
-
-        ? "可立即使用"
-
-        : "Ready To Use",
-
-
-    ],
-
-
-  };
+  const finalFeatures =
+    features.length > 0
+      ? features
+      : defaultFeatures;
 
 
 
+  const title =
+    language === "ar"
+      ? "المميزات"
+      : language === "zh"
+      ? "功能"
+      : "Features";
 
 
 
 
   return (
-
 
     <div
 
@@ -126,16 +98,11 @@ export default function ProductFeatures() {
     >
 
 
-
-
       <h2 className="text-3xl font-bold">
 
-        {text.title}
-
+        {title}
 
       </h2>
-
-
 
 
 
@@ -144,8 +111,7 @@ export default function ProductFeatures() {
       <div className="mt-8 space-y-4">
 
 
-
-        {text.features.map((item) => (
+        {finalFeatures.map((item) => (
 
 
           <div
@@ -195,9 +161,7 @@ export default function ProductFeatures() {
 
 
 
-
     </div>
-
 
   );
 

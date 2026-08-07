@@ -1,22 +1,32 @@
 import ProductCard from "@/components/Products/ProductCard";
 import { prisma } from "@/lib/prisma";
 
+
+
 type Props = {
   currentId: number;
 };
+
+
 
 export default async function RelatedProducts({
   currentId,
 }: Props) {
 
+
+
   const currentProduct = await prisma.product.findUnique({
+
     where: {
       id: currentId,
     },
+
     select: {
       country: true,
     },
+
   });
+
 
 
   if (!currentProduct) {
@@ -24,29 +34,48 @@ export default async function RelatedProducts({
   }
 
 
+
+
+
   const products = await prisma.product.findMany({
+
     where: {
+
       AND: [
+
         {
           id: {
             not: currentId,
           },
         },
+
         {
           country: currentProduct.country,
         },
+
       ],
+
     },
+
     orderBy: [
+
       {
         featured: "desc",
       },
+
       {
         createdAt: "desc",
       },
+
     ],
+
     take: 4,
+
   });
+
+
+
+
 
 
 
@@ -56,18 +85,14 @@ export default async function RelatedProducts({
 
 
 
+
+
+
+
   return (
-    <section
-      className="
-      relative
-      mx-auto
-      mt-24
-      max-w-[1700px]
-      overflow-hidden
-      px-10
-      pb-24
-      "
-    >
+
+    <section className="relative mt-24">
+
 
       <div
         className="
@@ -85,7 +110,10 @@ export default async function RelatedProducts({
       />
 
 
+
+
       <div className="relative z-10">
+
 
 
         <div className="mb-12 text-center">
@@ -108,6 +136,7 @@ export default async function RelatedProducts({
           </span>
 
 
+
           <h2
             className="
             mt-6
@@ -119,12 +148,16 @@ export default async function RelatedProducts({
           </h2>
 
 
+
           <p className="mt-3 text-zinc-400">
             More premium Apple IDs from the same country.
           </p>
 
 
         </div>
+
+
+
 
 
 
@@ -137,33 +170,64 @@ export default async function RelatedProducts({
           "
         >
 
+
+
           {products.map((product) => (
 
+
             <ProductCard
+
               key={product.id}
+
               id={product.id}
+
               title={product.title}
+
               slug={product.slug}
+
               country={product.country}
+
               price={Number(product.price)}
+
               currency={product.currency}
+
               rating={product.rating}
+
               featured={product.featured}
+
+              topRated={product.topRated}
+
+              bestSeller={product.bestSeller}
+
+              rare={product.rare}
+
+              features={product.features}
+
               image={product.image}
+
               stock={product.stock}
+
               description={product.description ?? ""}
+
               views={product.views}
+
             />
 
+
           ))}
+
 
 
         </div>
 
 
+
       </div>
 
 
+
     </section>
+
   );
+
 }
