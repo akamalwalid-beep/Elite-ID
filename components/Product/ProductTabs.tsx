@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/types/product";
+import type { Product } from "@/types/product";
 
 import {
   ShieldCheck,
@@ -10,12 +10,12 @@ import {
 } from "lucide-react";
 
 import { useLanguage } from "@/context/LanguageContext";
+import type { ReactNode } from "react";
 
 
 type Props = {
   product: Product;
 };
-
 
 
 export default function ProductTabs({
@@ -37,14 +37,12 @@ export default function ProductTabs({
         : "Product Details",
 
 
-
     subtitle:
       language === "ar"
         ? "كل ما تحتاج معرفته"
         : language === "zh"
         ? "你需要知道的一切"
         : "Everything you need to know",
-
 
 
     description:
@@ -55,14 +53,12 @@ export default function ProductTabs({
         : "Description",
 
 
-
     defaultDescription:
       language === "ar"
         ? "Apple ID مميز جاهز للتسليم الفوري."
         : language === "zh"
         ? "高级 Apple ID，可立即交付。"
         : "Premium Apple ID ready for instant delivery.",
-
 
 
     verified:
@@ -73,14 +69,12 @@ export default function ProductTabs({
         : "Verified account",
 
 
-
     instant:
       language === "ar"
         ? "تسليم فوري"
         : language === "zh"
         ? "即时交付"
         : "Instant delivery",
-
 
 
     quality:
@@ -94,18 +88,12 @@ export default function ProductTabs({
 
 
 
-
-
   return (
 
     <section
-
       dir={language === "ar" ? "rtl" : "ltr"}
-
       className="mx-auto mt-24 max-w-[1700px] px-10"
-
     >
-
 
 
       <div
@@ -122,8 +110,6 @@ export default function ProductTabs({
       >
 
 
-
-
         <div
           className="
           absolute
@@ -138,17 +124,10 @@ export default function ProductTabs({
         />
 
 
-
-
-
         <div className="relative z-10">
 
 
-
-
-
           <div className="flex items-center gap-3">
-
 
 
             <div
@@ -170,25 +149,16 @@ export default function ProductTabs({
 
 
 
-
-
             <div>
 
-
               <h2 className="text-4xl font-black">
-
                 {text.title}
-
               </h2>
 
 
-
               <p className="mt-1 text-zinc-500">
-
                 {text.subtitle}
-
               </p>
-
 
             </div>
 
@@ -197,14 +167,7 @@ export default function ProductTabs({
 
 
 
-
-
-
-
           <div className="mt-12 grid gap-12 lg:grid-cols-2">
-
-
-
 
 
             <div
@@ -217,27 +180,14 @@ export default function ProductTabs({
               "
             >
 
-
-
               <h3 className="text-2xl font-bold">
-
                 {text.description}
-
               </h3>
 
 
-
-
-
               <p className="mt-5 leading-8 text-zinc-400">
-
                 {product.description || text.defaultDescription}
-
               </p>
-
-
-
-
 
 
 
@@ -255,25 +205,15 @@ export default function ProductTabs({
               >
 
                 ✓ {text.verified}
-
                 <br />
-
                 ✓ {text.instant}
-
                 <br />
-
                 ✓ {text.quality}
-
 
               </div>
 
 
-
             </div>
-
-
-
-
 
 
 
@@ -282,100 +222,36 @@ export default function ProductTabs({
 
 
               <Feature
-
                 icon={<ShieldCheck size={24}/>}
-
-                title={
-                  language === "ar"
-                    ? "حساب آمن"
-                    : language === "zh"
-                    ? "安全账户"
-                    : "Secure Account"
-                }
-
-                text={
-                  language === "ar"
-                    ? "يتم التحقق من جميع الحسابات قبل التسليم."
-                    : language === "zh"
-                    ? "所有 Apple ID 在交付前都会验证。"
-                    : "All Apple IDs are verified before delivery."
-                }
-
+                title="Secure Account"
+                text="All Apple IDs are verified before delivery."
               />
 
 
-
-
-
               <Feature
-
                 icon={<Truck size={24}/>}
-
-                title={
-                  language === "ar"
-                    ? "تسليم فوري"
-                    : language === "zh"
-                    ? "即时交付"
-                    : "Instant Delivery"
-                }
-
-                text={
-                  language === "ar"
-                    ? "استلم حسابك مباشرة بعد الدفع."
-                    : language === "zh"
-                    ? "付款后立即收到您的账户。"
-                    : "Receive your account immediately after payment."
-                }
-
+                title="Instant Delivery"
+                text="Receive your product immediately after payment."
               />
-
-
-
 
 
               <Feature
-
                 icon={<RefreshCcw size={24}/>}
-
-                title={
-                  language === "ar"
-                    ? "ضمان الاستبدال"
-                    : language === "zh"
-                    ? "更换保证"
-                    : "Replacement Guarantee"
-                }
-
-                text={
-                  language === "ar"
-                    ? "يتوفر الاستبدال إذا حدثت أي مشكلة."
-                    : language === "zh"
-                    ? "如果出现问题，可以更换。"
-                    : "Replacement available if there is any issue."
-                }
-
+                title="Replacement Guarantee"
+                text="Replacement available if any issue happens."
               />
-
 
 
             </div>
 
 
-
-
-
           </div>
-
-
-
 
 
         </div>
 
 
-
-
       </div>
-
 
 
     </section>
@@ -386,15 +262,12 @@ export default function ProductTabs({
 
 
 
-
-
-
 function Feature({
   icon,
   title,
   text,
 }: {
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
   text: string;
 }) {
@@ -431,8 +304,6 @@ function Feature({
         rounded-2xl
         bg-lime-400/10
         text-lime-400
-        transition
-        group-hover:bg-lime-400/20
         "
       >
 
@@ -442,25 +313,19 @@ function Feature({
 
 
 
-
       <div>
 
         <h4 className="text-lg font-bold">
-
           {title}
-
         </h4>
 
 
         <p className="mt-2 text-sm leading-6 text-zinc-400">
-
           {text}
-
         </p>
 
 
       </div>
-
 
 
     </div>
