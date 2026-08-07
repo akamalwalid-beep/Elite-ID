@@ -9,63 +9,35 @@ datasource db {
 }
 
 model Admin {
-  id Int @id @default(autoincrement())
-
-  username     String @unique
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
   passwordHash String
-
-  name String?
-
-  role String @default("ADMIN")
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  name         String?
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Product {
-  id Int @id @default(autoincrement())
-
-  title String
-
-  slug String @unique
-
-  country String
-
-  price Decimal @db.Decimal(10, 2)
-
-  currency String @default("USDT")
-
-  image String
-
+  id          Int         @id @default(autoincrement())
+  title       String
+  slug        String      @unique
+  country     String
+  price       Decimal     @db.Decimal(10, 2)
+  currency    String      @default("USDT")
+  image       String
   description String?
-
-  stock Int @default(0)
-
-  views Int @default(0)
-
-  rating Float @default(5)
-
-  // Product badges
-
-  featured Boolean @default(false)
-
-  topRated Boolean @default(false)
-
-  bestSeller Boolean @default(false)
-
-  rare Boolean @default(false)
-
-  // Product features
-  // مثال:
-  // ["App Store","iCloud 5GB","2FA","Mailbox"]
-
-  features String[] @default([])
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
-
-  orderItems OrderItem[]
+  stock       Int         @default(0)
+  views       Int         @default(0)
+  rating      Float       @default(5)
+  featured    Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  bestSeller  Boolean     @default(false)
+  features    String[]    @default([])
+  rare        Boolean     @default(false)
+  topRated    Boolean     @default(false)
+  orderItems  OrderItem[]
 
   @@index([country])
   @@index([featured])
@@ -74,45 +46,27 @@ model Product {
 }
 
 model Order {
-  id Int @id @default(autoincrement())
-
-  customerName String?
-
+  id            Int         @id @default(autoincrement())
+  customerName  String?
   customerEmail String?
-
-  telegram String?
-
-  whatsapp String?
-
   paymentMethod String
-
-  total Decimal @db.Decimal(10, 2)
-
-  status String @default("Pending")
-
-  createdAt DateTime @default(now())
-
-  updatedAt DateTime @updatedAt
-
-  items OrderItem[]
+  total         Decimal     @db.Decimal(10, 2)
+  status        String      @default("Pending")
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  telegram      String?
+  whatsapp      String?
+  items         OrderItem[]
 }
 
 model OrderItem {
-  id Int @id @default(autoincrement())
-
-  orderId Int
-
+  id        Int      @id @default(autoincrement())
+  orderId   Int
   productId Int
-
-  country String
-
-  price Decimal @db.Decimal(10, 2)
-
-  quantity Int
-
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  product Product @relation(fields: [productId], references: [id])
-
+  country   String
+  price     Decimal  @db.Decimal(10, 2)
+  quantity  Int
   createdAt DateTime @default(now())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
 }
