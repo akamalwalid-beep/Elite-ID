@@ -22,16 +22,16 @@ export type Product = {
   rating: number;
 
 
-  featured?: boolean;
+  featured: boolean;
 
-  topRated?: boolean;
+  topRated: boolean;
 
-  bestSeller?: boolean;
+  bestSeller: boolean;
 
-  rare?: boolean;
+  rare: boolean;
 
 
-  features?: string[];
+  features: string[];
 
 
   createdAt?: Date;

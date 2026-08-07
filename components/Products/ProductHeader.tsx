@@ -10,10 +10,12 @@ import { useLanguage } from "@/context/LanguageContext";
 type Props = {
   title: string;
   country: string;
-  featured: boolean;
-  topRated: boolean;
-  bestSeller: boolean;
-  rare: boolean;
+
+  featured?: boolean;
+  topRated?: boolean;
+  bestSeller?: boolean;
+  rare?: boolean;
+
   views: number;
   image: string;
 };
@@ -23,10 +25,10 @@ type Props = {
 export default function ProductHeader({
   title,
   country,
-  featured,
-  topRated,
-  bestSeller,
-  rare,
+  featured = false,
+  topRated = false,
+  bestSeller = false,
+  rare = false,
   views,
   image,
 }: Props) {
@@ -105,8 +107,6 @@ export default function ProductHeader({
 
 
 
-
-
   const finalImage =
     image && image.startsWith("/")
       ? image
@@ -114,13 +114,9 @@ export default function ProductHeader({
 
 
 
-
-
-
   return (
 
     <>
-
 
       <div
         className={`
@@ -196,7 +192,6 @@ export default function ProductHeader({
 
 
 
-
         <div
           className="
           flex
@@ -207,51 +202,127 @@ export default function ProductHeader({
         >
 
 
-
           {rare && (
-            <div className="rounded-full border border-yellow-400/40 bg-yellow-400/10 px-3 py-1 text-xs font-bold text-yellow-400">
+
+            <div className="
+            rounded-full
+            border
+            border-yellow-400/40
+            bg-yellow-400/10
+            px-3
+            py-1
+            text-xs
+            font-bold
+            text-yellow-400
+            ">
+
               👑 {text.rare}
+
             </div>
+
           )}
+
 
 
 
           {bestSeller && (
-            <div className="rounded-full border border-yellow-400/30 bg-yellow-400/10 px-3 py-1 text-xs font-bold text-yellow-400">
+
+            <div className="
+            rounded-full
+            border
+            border-yellow-400/30
+            bg-yellow-400/10
+            px-3
+            py-1
+            text-xs
+            font-bold
+            text-yellow-400
+            ">
+
               ⭐ {text.bestSeller}
+
             </div>
+
           )}
 
 
 
+
+
+
           {featured && (
-            <div className="flex items-center gap-1 rounded-full border border-lime-400/30 bg-lime-400/10 px-3 py-1 text-xs font-bold text-lime-400">
+
+            <div className="
+            flex
+            items-center
+            gap-1
+            rounded-full
+            border
+            border-lime-400/30
+            bg-lime-400/10
+            px-3
+            py-1
+            text-xs
+            font-bold
+            text-lime-400
+            ">
 
               <Flame size={13}/>
 
               {text.featured}
 
             </div>
+
           )}
+
+
+
 
 
 
           {isTrending && (
-            <div className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1 text-xs font-bold text-orange-400">
+
+            <div className="
+            rounded-full
+            border
+            border-orange-400/20
+            bg-orange-500/10
+            px-3
+            py-1
+            text-xs
+            font-bold
+            text-orange-400
+            ">
 
               🔥 {text.trending}
 
             </div>
+
           )}
 
 
 
+
+
+
           {topRated && (
-            <div className="rounded-full border border-yellow-400/20 bg-yellow-500/10 px-3 py-1 text-xs font-bold text-yellow-400">
+
+            <div className="
+            rounded-full
+            border
+            border-yellow-400/20
+            bg-yellow-500/10
+            px-3
+            py-1
+            text-xs
+            font-bold
+            text-yellow-400
+            ">
 
               ⭐ {text.topRated}
 
             </div>
+
           )}
 
 
@@ -319,7 +390,6 @@ export default function ProductHeader({
           {title.toUpperCase()}
 
         </h2>
-
 
 
 
