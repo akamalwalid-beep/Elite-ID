@@ -2,33 +2,24 @@ import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/Products/ProductCard";
 import RelatedTitle from "./RelatedTitle";
 
-
 type Props = {
   currentId: number;
 };
-
 
 export default async function RelatedProducts({
   currentId,
 }: Props) {
 
-
   const products = await prisma.product.findMany({
 
     where: {
-
       NOT: {
-
         id: currentId,
-
       },
-
     },
 
     orderBy: {
-
       featured: "desc",
-
     },
 
     take: 4,
@@ -37,14 +28,9 @@ export default async function RelatedProducts({
 
 
 
-
   if (products.length === 0) {
-
     return null;
-
   }
-
-
 
 
 
@@ -75,8 +61,7 @@ export default async function RelatedProducts({
       >
 
 
-        {products.map((product)=>(
-
+        {products.map((product) => (
 
           <ProductCard
 
@@ -98,6 +83,14 @@ export default async function RelatedProducts({
 
             featured={product.featured}
 
+            topRated={product.topRated}
+
+            bestSeller={product.bestSeller}
+
+            rare={product.rare}
+
+            features={product.features}
+
             image={product.image}
 
             stock={product.stock}
@@ -108,12 +101,10 @@ export default async function RelatedProducts({
 
           />
 
-
         ))}
 
 
       </div>
-
 
 
     </section>
