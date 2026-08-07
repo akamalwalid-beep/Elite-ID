@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Check } from "lucide-react";
 
 import { Product } from "../../types/product";
 import { useCart } from "../../context/CartContext";
@@ -12,141 +13,299 @@ import ProductStats from "./ProductStats";
 import ProductPrice from "./ProductPrice";
 import ProductActions from "./ProductActions";
 
+
 type ProductCardProps = Product;
 
+
+
 export default function ProductCard(props: ProductCardProps) {
+
+
   const { addToCart } = useCart();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  function handleConfirm(quantity: number) {
+  const [isModalOpen, setIsModalOpen] =
+    useState(false);
+
+
+
+  function handleConfirm(quantity:number){
+
     addToCart({
-      id: props.id,
-      title: props.title,
-      slug: props.slug,
-      country: props.country,
-      price: props.price,
-      currency: props.currency,
-      rating: props.rating,
-      image: props.image,
-      stock: props.stock,
-      description: props.description,
-      views: props.views,
-      featured: props.featured,
+      ...props,
     });
+
   }
+
+
+
+
 
   const inStock = props.stock > 0;
 
+
+  const premiumCard =
+    props.rare || props.bestSeller;
+
+
+
+
+
   return (
+
     <>
+
       <div
-        className="
-          group
-          relative
-          overflow-hidden
-          rounded-[32px]
-          border
+        className={`
+        group
+        relative
+        flex
+        h-full
+        min-h-[760px]
+        flex-col
+        overflow-hidden
+        rounded-[32px]
+        border
+        transition-all
+        duration-500
+        hover:-translate-y-2
+
+
+        ${
+          premiumCard
+
+          ?
+
+          `
+          border-yellow-400/40
+          bg-gradient-to-b
+          from-[#332707]
+          via-[#17120a]
+          to-[#090909]
+          shadow-[0_25px_80px_rgba(250,204,21,.2)]
+          `
+
+          :
+
+          `
           border-zinc-800
           bg-gradient-to-b
           from-[#1b1b1b]
           via-[#111111]
           to-[#090909]
-          transition-all
-          duration-500
-          hover:-translate-y-2
-          hover:border-lime-400/40
-          hover:shadow-[0_25px_80px_rgba(132,255,0,.18)]
-        "
+          `
+        }
+
+
+        hover:border-lime-400/40
+        `}
       >
 
-        <div
-          className="
-            absolute
-            -left-24
-            -top-24
-            h-72
-            w-72
-            rounded-full
-            bg-lime-400/10
-            blur-[120px]
-            opacity-0
-            transition-all
-            duration-700
-            group-hover:opacity-100
-          "
-        />
+
+
+
 
         <div
           className="
-            absolute
-            inset-0
-            -translate-x-full
-            bg-[linear-gradient(120deg,transparent,rgba(255,255,255,.05),transparent)]
-            transition-transform
-            duration-1000
-            group-hover:translate-x-full
+          absolute
+          -left-24
+          -top-24
+          h-72
+          w-72
+          rounded-full
+          bg-lime-400/10
+          blur-[120px]
+          opacity-0
+          transition-all
+          duration-700
+          group-hover:opacity-100
           "
         />
 
-        <div
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            rounded-[32px]
-            border
-            border-white/5
-            opacity-0
-            transition
-            duration-500
-            group-hover:opacity-100
-          "
-        />
 
-        <div className="relative z-10 p-7">
+
+
+
+
+        <div className="relative z-10 flex h-full flex-col p-7">
+
+
+
+
 
           <ProductHeader
+
+            title={props.title}
+
             country={props.country}
+
             featured={props.featured}
-            rating={props.rating}
+
+            topRated={props.topRated}
+
+            bestSeller={props.bestSeller}
+
+            rare={props.rare}
+
             views={props.views}
+
             image={props.image}
+
           />
 
-          <div className="mt-7">
-            <ProductStats
-              views={props.views}
-              stock={props.stock}
-              rating={props.rating}
-            />
+
+
+
+
+
+
+          <div className="mt-6 min-h-[190px]">
+
+
+            {
+              props.features &&
+              props.features.length > 0 && (
+
+                <div
+                  className="
+                  rounded-2xl
+                  border
+                  border-white/10
+                  bg-black/20
+                  p-4
+                  "
+                >
+
+                  <div className="space-y-2">
+
+                    {
+                      props.features.map((feature)=>(
+
+                        <div
+                          key={feature}
+                          className="
+                          flex
+                          items-center
+                          gap-2
+                          text-sm
+                          text-zinc-300
+                          "
+                        >
+
+                          <Check
+                            size={16}
+                            className="text-lime-400"
+                          />
+
+                          {feature}
+
+                        </div>
+
+                      ))
+                    }
+
+                  </div>
+
+                </div>
+
+              )
+            }
+
+
           </div>
+
+
+
+
+
+
+
+          <div className="mt-6">
+
+
+            <ProductStats
+
+              stock={props.stock}
+
+            />
+
+
+          </div>
+
+
+
+
+
+
+
 
           <div className="mt-8">
+
+
             <ProductPrice
+
               price={props.price}
+
               currency={props.currency}
+
             />
+
+
           </div>
 
-          <div className="mt-10">
+
+
+
+
+
+
+          <div className="mt-auto pt-10">
+
+
             <ProductActions
+
               id={props.id}
+
               inStock={inStock}
+
               onAddToCart={() => setIsModalOpen(true)}
+
             />
+
+
           </div>
+
+
+
+
+
 
         </div>
 
+
       </div>
 
+
+
+
+
+
+
       <AddToCartModal
+
         product={props}
+
         isOpen={isModalOpen}
+
         onClose={() => setIsModalOpen(false)}
+
         onConfirm={handleConfirm}
+
       />
+
+
     </>
+
   );
+
 }

@@ -2,7 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ShieldCheck, X } from "lucide-react";
+
 import { Product } from "../../types/product";
+import { useLanguage } from "@/context/LanguageContext";
+
 
 type AddToCartModalProps = {
   product: Product | null;
@@ -11,37 +14,159 @@ type AddToCartModalProps = {
   onConfirm: (quantity: number) => void;
 };
 
+
+
 export default function AddToCartModal({
   product,
   isOpen,
   onClose,
   onConfirm,
 }: AddToCartModalProps) {
+
+
   const [quantity, setQuantity] = useState("1");
+
+
   const inputRef = useRef<HTMLInputElement>(null);
 
+
+  const { language } = useLanguage();
+
+
+
+
+  const text = {
+
+    choose:
+      language === "ar"
+        ? "اختر الكمية وأضفها إلى السلة."
+        : language === "zh"
+        ? "选择数量并加入购物车。"
+        : "Choose quantity and add to your cart.",
+
+
+
+    unit:
+      language === "ar"
+        ? "سعر الوحدة"
+        : language === "zh"
+        ? "单价"
+        : "Unit Price",
+
+
+
+    quantity:
+      language === "ar"
+        ? "الكمية"
+        : language === "zh"
+        ? "数量"
+        : "Quantity",
+
+
+
+    total:
+      language === "ar"
+        ? "الإجمالي"
+        : language === "zh"
+        ? "总计"
+        : "Total",
+
+
+
+    secure:
+      language === "ar"
+        ? "دفع آمن وتسليم فوري"
+        : language === "zh"
+        ? "安全支付和即时交付"
+        : "Secure & instant delivery",
+
+
+
+    cancel:
+      language === "ar"
+        ? "إلغاء"
+        : language === "zh"
+        ? "取消"
+        : "Cancel",
+
+
+
+    add:
+      language === "ar"
+        ? "إضافة للسلة"
+        : language === "zh"
+        ? "加入购物车"
+        : "Add To Cart",
+
+  };
+
+
+
+
+
+
   useEffect(() => {
+
     if (!isOpen) return;
+
 
     setQuantity("1");
 
+
     setTimeout(() => {
+
       inputRef.current?.focus();
+
       inputRef.current?.select();
+
     }, 50);
 
+
   }, [isOpen, product]);
+
+
+
+
 
 
   if (!isOpen || !product) return null;
 
 
-  const qty = Math.max(1, Number(quantity) || 1);
-  const total = (product.price * qty).toFixed(2);
+
+
+
+  const qty = Math.min(
+
+    product.stock,
+
+    Math.max(
+      1,
+      Number(quantity) || 1
+    )
+
+  );
+
+
+
+
+  const total = (
+
+    product.price * qty
+
+  ).toFixed(2);
+
+
+
+
+
 
 
   return (
+
     <div
+
+      dir={language === "ar" ? "rtl" : "ltr"}
+
       className="
       fixed
       inset-0
@@ -53,7 +178,11 @@ export default function AddToCartModal({
       px-5
       backdrop-blur-md
       "
+
     >
+
+
+
 
       <div
         className="
@@ -72,7 +201,7 @@ export default function AddToCartModal({
       >
 
 
-        {/* Glow */}
+
 
         <div
           className="
@@ -88,29 +217,49 @@ export default function AddToCartModal({
         />
 
 
+
+
+
         <div className="relative z-10">
 
 
-          {/* Header */}
+
+
 
           <div className="flex items-start justify-between">
 
+
+
             <div>
 
+
               <h2 className="text-3xl font-black">
+
                 {product.country} Apple ID
+
               </h2>
 
 
+
               <p className="mt-2 text-zinc-400">
-                Choose quantity and add to your cart.
+
+                {text.choose}
+
               </p>
+
+
 
             </div>
 
 
+
+
+
+
             <button
+
               onClick={onClose}
+
               className="
               rounded-xl
               border
@@ -121,16 +270,23 @@ export default function AddToCartModal({
               hover:border-red-400/40
               hover:text-red-400
               "
+
             >
+
               <X size={20}/>
+
             </button>
+
+
 
           </div>
 
 
 
 
-          {/* Price */}
+
+
+
 
           <div
             className="
@@ -143,44 +299,64 @@ export default function AddToCartModal({
             "
           >
 
+
             <p className="text-sm text-zinc-500">
-              Unit Price
+
+              {text.unit}
+
             </p>
 
 
-            <h3
-              className="
-              mt-2
-              text-3xl
-              font-black
-              text-lime-400
-              "
-            >
+
+
+            <h3 className="mt-2 text-3xl font-black text-lime-400">
+
               {product.price.toFixed(2)} {product.currency}
+
             </h3>
+
+
 
           </div>
 
 
 
 
-          {/* Quantity */}
+
+
+
 
           <div className="mt-8">
 
+
             <label className="mb-3 block text-sm text-zinc-400">
-              Quantity
+
+              {text.quantity}
+
             </label>
 
 
+
+
+
             <input
+
               ref={inputRef}
+
               type="number"
+
               min={1}
+
+              max={product.stock}
+
               step={1}
+
               value={quantity}
-              onFocus={(e) => e.target.select()}
-              onChange={(e) => setQuantity(e.target.value)}
+
+              onFocus={(e)=>e.target.select()}
+
+              onChange={(e)=>setQuantity(e.target.value)}
+
               className="
               w-full
               rounded-2xl
@@ -193,14 +369,19 @@ export default function AddToCartModal({
               transition
               focus:border-lime-400
               "
+
             />
+
 
           </div>
 
 
 
 
-          {/* Total */}
+
+
+
+
 
           <div
             className="
@@ -213,21 +394,31 @@ export default function AddToCartModal({
             "
           >
 
+
             <p className="text-sm text-zinc-400">
-              Total
+
+              {text.total}
+
             </p>
 
 
+
             <h3 className="mt-2 text-4xl font-black text-lime-400">
+
               {total} {product.currency}
+
             </h3>
+
+
 
           </div>
 
 
 
 
-          {/* Trust */}
+
+
+
 
           <div
             className="
@@ -245,27 +436,43 @@ export default function AddToCartModal({
             "
           >
 
+
             <ShieldCheck
               size={20}
               className="text-lime-400"
             />
 
-            Secure & instant delivery
+
+            {text.secure}
+
+
 
           </div>
 
 
 
 
-          {/* Buttons */}
+
+
+
+
 
           <div className="mt-8 flex gap-4">
 
+
+
+
+
             <button
-              onClick={() => {
+
+              onClick={()=>{
+
                 setQuantity("1");
+
                 onClose();
+
               }}
+
               className="
               flex-1
               rounded-2xl
@@ -277,18 +484,32 @@ export default function AddToCartModal({
               hover:border-red-400/40
               hover:text-red-400
               "
+
             >
-              Cancel
+
+              {text.cancel}
+
+
             </button>
 
 
 
+
+
+
+
             <button
-              onClick={() => {
+
+              onClick={()=>{
+
                 onConfirm(qty);
+
                 setQuantity("1");
+
                 onClose();
+
               }}
+
               className="
               flex-1
               rounded-2xl
@@ -300,17 +521,36 @@ export default function AddToCartModal({
               hover:scale-105
               hover:shadow-[0_0_40px_rgba(132,255,0,.4)]
               "
+
             >
-              Add To Cart
+
+              {text.add}
+
+
             </button>
+
+
+
+
 
           </div>
 
 
+
+
+
         </div>
+
+
+
 
       </div>
 
+
+
+
     </div>
+
   );
+
 }

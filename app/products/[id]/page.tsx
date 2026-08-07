@@ -7,38 +7,91 @@ import BuyBox from "@/components/Product/BuyBox";
 import ProductTabs from "@/components/Product/ProductTabs";
 import RelatedProducts from "@/components/Product/RelatedProducts";
 
+
 type Props = {
   params: Promise<{
     id: string;
   }>;
 };
 
+
+
 export default async function ProductPage({ params }: Props) {
+
+
   const { id } = await params;
 
-  const product = await prisma.product.findUnique({
-    where: {
-      id: Number(id),
+
+
+  await prisma.product.update({
+
+    where:{
+      id:Number(id),
     },
+
+    data:{
+      views:{
+        increment:1,
+      },
+    },
+
   });
 
+
+
+
+
+  const product = await prisma.product.findUnique({
+
+    where:{
+      id:Number(id),
+    },
+
+  });
+
+
+
+
+
   if (!product) {
+
     notFound();
+
   }
 
+
+
+
+
   const formattedProduct = {
+
     ...product,
-    price: Number(product.price),
-    description: product.description ?? "",
+
+    price:Number(product.price),
+
+    description:
+      product.description ?? "",
+
   };
 
+
+
+
+
+
   return (
+
     <main className="relative min-h-screen overflow-hidden bg-[#090909] text-white">
+
+
+
 
 
       {/* Animated Premium Background */}
 
+
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
+
 
         <div
           className="
@@ -55,6 +108,7 @@ export default async function ProductPage({ params }: Props) {
         />
 
 
+
         <div
           className="
           absolute
@@ -68,6 +122,7 @@ export default async function ProductPage({ params }: Props) {
           animate-[pulse_10s_ease-in-out_infinite]
           "
         />
+
 
 
         <div
@@ -89,39 +144,76 @@ export default async function ProductPage({ params }: Props) {
 
 
 
+
+
+
+
+
       <div className="relative z-10">
+
 
 
         <section className="mx-auto max-w-[1700px] px-10 py-14">
 
+
           <div className="grid gap-12 xl:grid-cols-[650px_1fr_420px]">
 
 
-            <ProductGallery product={formattedProduct} />
+            <ProductGallery
+              product={formattedProduct}
+            />
 
 
-            <ProductInfo product={formattedProduct} />
+
+            <ProductInfo
+              product={formattedProduct}
+            />
 
 
-            <BuyBox product={formattedProduct} />
+
+            <BuyBox
+              product={formattedProduct}
+            />
+
 
 
           </div>
+
+
 
         </section>
 
 
 
-        <ProductTabs product={formattedProduct} />
 
 
 
-        <RelatedProducts currentId={formattedProduct.id} />
+
+        <ProductTabs
+          product={formattedProduct}
+        />
+
+
+
+
+
+
+        <RelatedProducts
+          currentId={formattedProduct.id}
+        />
+
+
+
 
 
       </div>
 
 
+
+
     </main>
+
   );
+
+
 }

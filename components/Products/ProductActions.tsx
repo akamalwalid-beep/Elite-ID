@@ -3,26 +3,67 @@
 import Link from "next/link";
 import { ShoppingCart, ArrowRight } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
+
 type Props = {
   id: number;
   inStock: boolean;
   onAddToCart: () => void;
 };
 
+
 export default function ProductActions({
   id,
   inStock,
   onAddToCart,
 }: Props) {
+
+
+  const { language } = useLanguage();
+
+
+
+  const text = {
+
+    addCart:
+      language === "ar"
+        ? "إضافة للسلة"
+        : language === "zh"
+        ? "加入购物车"
+        : "Add To Cart",
+
+
+    unavailable:
+      language === "ar"
+        ? "غير متوفر"
+        : language === "zh"
+        ? "不可用"
+        : "Unavailable",
+
+
+    view:
+      language === "ar"
+        ? "عرض"
+        : language === "zh"
+        ? "查看"
+        : "View",
+
+  };
+
+
+
   return (
+
     <div className="relative z-10 mt-8 flex gap-3">
 
 
-      {/* Add To Cart */}
-
       <button
+
         disabled={!inStock}
+
         onClick={onAddToCart}
+
         className="
         group
         relative
@@ -42,7 +83,9 @@ export default function ProductActions({
         disabled:bg-zinc-800
         disabled:text-zinc-500
         "
+
       >
+
 
         <span
           className="
@@ -60,6 +103,7 @@ export default function ProductActions({
         />
 
 
+
         <span
           className="
           relative
@@ -72,9 +116,11 @@ export default function ProductActions({
 
           <ShoppingCart size={20} />
 
+
           {inStock
-            ? "Add To Cart"
-            : "Unavailable"}
+            ? text.addCart
+            : text.unavailable}
+
 
         </span>
 
@@ -84,10 +130,11 @@ export default function ProductActions({
 
 
 
-      {/* View */}
 
       <Link
+
         href={`/products/${id}`}
+
         className="
         group
         flex
@@ -107,18 +154,24 @@ export default function ProductActions({
         hover:border-lime-400/40
         hover:bg-lime-400/10
         "
+
       >
 
-        View
+
+        {text.view}
+
 
 
         <ArrowRight
+
           size={18}
+
           className="
           transition-transform
           duration-300
           group-hover:translate-x-1
           "
+
         />
 
 
@@ -126,5 +179,7 @@ export default function ProductActions({
 
 
     </div>
+
   );
+
 }

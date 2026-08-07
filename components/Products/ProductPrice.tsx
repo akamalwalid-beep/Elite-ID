@@ -1,22 +1,40 @@
+"use client";
+
+import { useLanguage } from "@/context/LanguageContext";
+
+
 type Props = {
   price: number;
   currency: string;
 };
 
+
 export default function ProductPrice({
   price,
   currency,
 }: Props) {
+
+
+  const { language } = useLanguage();
+
+
   const oldPrice = price * 1.25;
+
+
   const discount = Math.round(
     ((oldPrice - price) / oldPrice) * 100
   );
 
+
+
   return (
+
     <div className="relative z-10 mt-8">
+
 
       <div
         className="
+          group
           relative
           overflow-hidden
           rounded-3xl
@@ -29,6 +47,9 @@ export default function ProductPrice({
           backdrop-blur-xl
         "
       >
+
+
+
 
         {/* Shine */}
 
@@ -47,48 +68,127 @@ export default function ProductPrice({
           "
         />
 
+
+
+
+
         {/* Discount */}
 
-        <div className="absolute left-5 top-5 rounded-full bg-red-500/10 px-3 py-1 text-xs font-bold text-red-400">
+        <div
+          className="
+          absolute
+          left-5
+          top-5
+          rounded-full
+          bg-red-500/10
+          px-3
+          py-1
+          text-xs
+          font-bold
+          text-red-400
+          "
+        >
 
           -{discount}%
 
         </div>
 
-        <p className="text-center text-xs uppercase tracking-[0.3em] text-zinc-500">
 
-          Starting From
+
+
+
+
+        <p
+          className="
+          text-center
+          text-xs
+          uppercase
+          tracking-[0.3em]
+          text-zinc-500
+          "
+        >
+
+          {language === "ar"
+            ? "يبدأ من"
+            : language === "zh"
+            ? "起价"
+            : "Starting From"
+          }
 
         </p>
 
+
+
+
+
+
+
         <div className="mt-3 flex items-end justify-center gap-2">
 
-          <span className="text-5xl font-black text-lime-400">
+
+          <span
+            className="
+            text-5xl
+            font-black
+            text-lime-400
+            "
+          >
 
             {price.toFixed(2)}
 
           </span>
 
-          <span className="mb-2 text-lg text-zinc-400">
+
+
+          <span
+            className="
+            mb-2
+            text-lg
+            text-zinc-400
+            "
+          >
 
             {currency}
 
           </span>
 
+
+
         </div>
+
+
+
+
+
+
 
         <div className="mt-3 text-center">
 
-          <span className="text-lg text-zinc-600 line-through">
+
+          <span
+            className="
+            text-lg
+            text-zinc-600
+            line-through
+            "
+          >
 
             {oldPrice.toFixed(2)} {currency}
 
           </span>
 
+
         </div>
+
+
+
+
 
       </div>
 
+
     </div>
+
   );
+
 }

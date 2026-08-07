@@ -2,94 +2,151 @@
 
 import Link from "next/link";
 import { ShoppingCart, User } from "lucide-react";
-import { useCart } from "../../context/CartContext";
+
+import { useCart } from "@/context/CartContext";
+import { useLanguage } from "@/context/LanguageContext";
+import { translations } from "@/translations";
+
 
 export default function UserActions() {
+
+
   const { cartCount } = useCart();
 
+
+  const { language } = useLanguage();
+
+
+  const t = translations[language];
+
+
+
+
   return (
-    <div className="flex items-center gap-3">
+
+    <div
+      dir={language === "ar" ? "rtl" : "ltr"}
+      className="
+      flex
+      items-center
+      gap-3
+      "
+    >
+
+
+
+
 
       <Link
+
         href="/cart"
+
         className="
-          group
-          relative
-          flex
-          h-12
-          w-12
-          items-center
-          justify-center
-          rounded-2xl
-          border
-          border-zinc-800
-          bg-white/[0.04]
-          text-zinc-300
-          backdrop-blur-xl
-          transition-all
-          duration-300
-          hover:border-lime-400
-          hover:bg-lime-400/10
-          hover:text-lime-400
-          hover:shadow-[0_0_25px_rgba(132,255,0,.25)]
+        group
+        relative
+        flex
+        h-12
+        w-12
+        items-center
+        justify-center
+        rounded-2xl
+        border
+        border-zinc-800
+        bg-white/[0.04]
+        text-zinc-300
+        backdrop-blur-xl
+        transition-all
+        hover:border-lime-400
+        hover:bg-lime-400/10
+        hover:text-lime-400
         "
+
       >
+
+
         <ShoppingCart
           size={20}
-          className="transition-transform duration-300 group-hover:scale-110"
         />
+
+
+
 
         {cartCount > 0 && (
+
           <span
+
             className="
-              absolute
-              -right-1
-              -top-1
-              flex
-              h-6
-              w-6
-              items-center
-              justify-center
-              rounded-full
-              bg-lime-400
-              text-xs
-              font-black
-              text-black
-              shadow-[0_0_20px_rgba(132,255,0,.7)]
+            absolute
+            -right-1
+            -top-1
+            flex
+            h-6
+            w-6
+            items-center
+            justify-center
+            rounded-full
+            bg-lime-400
+            text-xs
+            font-black
+            text-black
             "
+
           >
+
             {cartCount}
+
           </span>
+
         )}
+
+
+
+
       </Link>
+
+
+
+
+
+
 
       <Link
+
         href="/login"
+
         className="
-          group
-          flex
-          items-center
-          gap-3
-          rounded-2xl
-          bg-lime-400
-          px-6
-          py-3
-          font-bold
-          text-black
-          transition-all
-          duration-300
-          hover:scale-105
-          hover:shadow-[0_0_40px_rgba(132,255,0,.45)]
+        flex
+        items-center
+        gap-3
+        rounded-2xl
+        bg-lime-400
+        px-6
+        py-3
+        font-bold
+        text-black
+        transition
+        hover:scale-105
         "
+
       >
+
+
         <User
           size={20}
-          className="transition-transform duration-300 group-hover:scale-110"
         />
 
-        Login
+
+        {t.login}
+
+
       </Link>
 
+
+
+
+
     </div>
+
   );
+
 }

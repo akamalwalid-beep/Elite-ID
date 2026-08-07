@@ -1,62 +1,223 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+
 export async function POST(req: Request) {
+
   try {
+
+
     const body = await req.json();
 
+
+
     if (
-      !body.customerName ||
-      !body.customerEmail ||
+      !body.telegram ||
+      !body.whatsapp ||
       !body.paymentMethod ||
-      !body.items ||
-      !Array.isArray(body.items)
+      !Array.isArray(body.items) ||
+      body.items.length === 0
     ) {
+
       return NextResponse.json(
-        { message: "Invalid request body" },
-        { status: 400 }
+        {
+          message: "Invalid request body",
+        },
+        {
+          status: 400,
+        }
       );
+
     }
 
-    const total = body.items.reduce(
-      (sum: number, item: any) =>
-        sum + Number(item.price) * Number(item.quantity),
-      0
+
+
+
+
+    const items = body.items.map((item: any) => ({
+
+
+      productId: Number(item.productId),
+
+
+      country: String(item.country),
+
+
+      price: Number(item.price),
+
+
+      quantity: Number(item.quantity),
+
+
+    }));
+
+
+
+
+
+
+
+    const invalidItem = items.some(
+      (item) =>
+        !item.productId ||
+        item.price <= 0 ||
+        item.quantity <= 0
     );
+
+
+
+
+
+    if(invalidItem){
+
+      return NextResponse.json(
+        {
+          message:"Invalid order items",
+        },
+        {
+          status:400,
+        }
+      );
+
+    }
+
+
+
+
+
+
+
+    const total = items.reduce(
+
+      (
+        sum:number,
+        item:any
+      ) =>
+
+        sum +
+        item.price *
+        item.quantity,
+
+      0
+
+    );
+
+
+
+
+
+
+
+
 
     const order = await prisma.order.create({
-      data: {
-        customerName: body.customerName,
-        customerEmail: body.customerEmail,
-        paymentMethod: body.paymentMethod,
+
+      data:{
+
+
+        telegram: body.telegram,
+
+
+        whatsapp: body.whatsapp,
+
+
+
+        paymentMethod:
+          body.paymentMethod,
+
+
+
         total,
 
-        items: {
-          create: body.items.map((item: any) => ({
-            productId: item.productId,
-            country: item.country,
-            price: Number(item.price),
-            quantity: Number(item.quantity),
-          })),
-        },
+
+
+        items:{
+
+
+          create: items.map((item:any)=>(
+
+            {
+
+              productId:item.productId,
+
+              country:item.country,
+
+              price:item.price,
+
+              quantity:item.quantity,
+
+            }
+
+          ))
+
+
+        }
+
+
       },
 
-      include: {
-        items: true,
-      },
+
+
+      include:{
+
+
+        items:true
+
+
+      }
+
+
     });
 
-    return NextResponse.json(order, { status: 201 });
-  } catch (error) {
-    console.error("ORDER API ERROR:", error);
+
+
+
+
+
+
+
 
     return NextResponse.json(
+
+      order,
+
       {
-        message: "Failed to create order",
-      },
-      {
-        status: 500,
+        status:201,
       }
+
     );
+
+
+
+
+
+
+
+  } catch(error){
+
+
+
+    console.error(
+      "ORDER API ERROR:",
+      error
+    );
+
+
+
+    return NextResponse.json(
+
+      {
+        message:"Failed to create order",
+      },
+
+      {
+        status:500,
+      }
+
+    );
+
+
   }
+
+
 }

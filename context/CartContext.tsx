@@ -36,21 +36,34 @@ export function CartProvider({
 
 
   const [cart, setCart] = useState<CartItem[]>([]);
+
   const [loaded, setLoaded] = useState(false);
+
 
 
 
   useEffect(() => {
 
-    const savedCart = localStorage.getItem("elite-cart");
+    const savedCart =
+      localStorage.getItem("elite-cart");
+
 
     if (savedCart) {
-      setCart(JSON.parse(savedCart));
+
+      setCart(
+        JSON.parse(savedCart)
+      );
+
     }
+
 
     setLoaded(true);
 
+
   }, []);
+
+
+
 
 
 
@@ -59,10 +72,12 @@ export function CartProvider({
 
     if (!loaded) return;
 
+
     localStorage.setItem(
       "elite-cart",
       JSON.stringify(cart)
     );
+
 
   }, [cart, loaded]);
 
@@ -70,41 +85,83 @@ export function CartProvider({
 
 
 
+
+
   function addToCart(product: Product) {
 
-    setCart((currentCart) => {
 
-      const existingItem = currentCart.find(
-        item => item.id === product.id
-      );
+    setCart((currentCart)=>{
 
 
-      if (existingItem) {
+      const existingItem =
+        currentCart.find(
+          item => item.id === product.id
+        );
+
+
+
+      if(existingItem){
+
 
         return currentCart.map(item =>
+
           item.id === product.id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
-            : item
+
+          ?
+
+          {
+            ...item,
+            quantity:item.quantity + 1,
+          }
+
+          :
+
+          item
+
         );
+
 
       }
 
 
 
+
+
+
       return [
+
         ...currentCart,
+
         {
+
           ...product,
-          quantity: 1,
-        },
+
+          quantity:1,
+
+          // new product options
+
+          features:
+            product.features ?? [],
+
+
+          rare:
+            product.rare ?? false,
+
+
+          bestSeller:
+            product.bestSeller ?? false,
+
+        }
+
       ];
+
 
     });
 
+
   }
+
+
 
 
 
@@ -112,11 +169,20 @@ export function CartProvider({
 
   function removeFromCart(id:number){
 
+
     setCart(cart =>
-      cart.filter(item => item.id !== id)
+
+      cart.filter(
+        item => item.id !== id
+      )
+
     );
 
+
   }
+
+
+
 
 
 
@@ -124,18 +190,33 @@ export function CartProvider({
 
   function increaseQuantity(id:number){
 
+
     setCart(cart =>
+
       cart.map(item =>
+
         item.id === id
-        ? {
-            ...item,
-            quantity:item.quantity + 1
-          }
-        : item
+
+        ?
+
+        {
+          ...item,
+          quantity:item.quantity + 1
+        }
+
+        :
+
+        item
+
       )
+
     );
 
+
   }
+
+
+
 
 
 
@@ -143,20 +224,39 @@ export function CartProvider({
 
   function decreaseQuantity(id:number){
 
+
     setCart(cart =>
+
       cart
+
       .map(item =>
+
         item.id === id
-        ? {
-            ...item,
-            quantity:item.quantity - 1
-          }
-        : item
+
+        ?
+
+        {
+          ...item,
+          quantity:item.quantity - 1
+        }
+
+        :
+
+        item
+
       )
-      .filter(item => item.quantity > 0)
+
+      .filter(
+        item => item.quantity > 0
+      )
+
     );
 
+
   }
+
+
+
 
 
 
@@ -172,14 +272,26 @@ export function CartProvider({
 
 
 
-  const cartCount = useMemo(() => {
+
+
+
+  const cartCount = useMemo(()=>{
+
 
     return cart.reduce(
-      (total,item)=> total + item.quantity,
+
+      (total,item)=>
+
+        total + item.quantity,
+
       0
+
     );
 
+
   },[cart]);
+
+
 
 
 
@@ -189,15 +301,25 @@ export function CartProvider({
   return (
 
     <CartContext.Provider
+
       value={{
+
         cart,
+
         addToCart,
+
         removeFromCart,
+
         increaseQuantity,
+
         decreaseQuantity,
+
         clearCart,
+
         cartCount,
+
       }}
+
     >
 
       {children}
@@ -211,18 +333,28 @@ export function CartProvider({
 
 
 
+
+
+
 export function useCart(){
 
-  const context = useContext(CartContext);
+
+  const context =
+    useContext(CartContext);
+
 
 
   if(!context){
+
     throw new Error(
       "useCart must be used inside CartProvider"
     );
+
   }
 
 
+
   return context;
+
 
 }

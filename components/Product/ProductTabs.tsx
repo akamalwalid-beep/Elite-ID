@@ -1,6 +1,7 @@
 "use client";
 
 import { Product } from "@/types/product";
+
 import {
   ShieldCheck,
   Truck,
@@ -8,13 +9,104 @@ import {
   Lock,
 } from "lucide-react";
 
+import { useLanguage } from "@/context/LanguageContext";
+
+
 type Props = {
   product: Product;
 };
 
-export default function ProductTabs({ product }: Props) {
+
+
+export default function ProductTabs({
+  product,
+}: Props) {
+
+
+  const { language } = useLanguage();
+
+
+
+  const text = {
+
+    title:
+      language === "ar"
+        ? "تفاصيل المنتج"
+        : language === "zh"
+        ? "产品详情"
+        : "Product Details",
+
+
+
+    subtitle:
+      language === "ar"
+        ? "كل ما تحتاج معرفته"
+        : language === "zh"
+        ? "你需要知道的一切"
+        : "Everything you need to know",
+
+
+
+    description:
+      language === "ar"
+        ? "الوصف"
+        : language === "zh"
+        ? "描述"
+        : "Description",
+
+
+
+    defaultDescription:
+      language === "ar"
+        ? "Apple ID مميز جاهز للتسليم الفوري."
+        : language === "zh"
+        ? "高级 Apple ID，可立即交付。"
+        : "Premium Apple ID ready for instant delivery.",
+
+
+
+    verified:
+      language === "ar"
+        ? "حساب موثق"
+        : language === "zh"
+        ? "已验证账户"
+        : "Verified account",
+
+
+
+    instant:
+      language === "ar"
+        ? "تسليم فوري"
+        : language === "zh"
+        ? "即时交付"
+        : "Instant delivery",
+
+
+
+    quality:
+      language === "ar"
+        ? "جودة ممتازة"
+        : language === "zh"
+        ? "高级质量"
+        : "Premium quality",
+
+  };
+
+
+
+
+
   return (
-    <section className="mx-auto mt-24 max-w-[1700px] px-10">
+
+    <section
+
+      dir={language === "ar" ? "rtl" : "ltr"}
+
+      className="mx-auto mt-24 max-w-[1700px] px-10"
+
+    >
+
+
 
       <div
         className="
@@ -29,7 +121,8 @@ export default function ProductTabs({ product }: Props) {
         "
       >
 
-        {/* Background Glow */}
+
+
 
         <div
           className="
@@ -45,10 +138,18 @@ export default function ProductTabs({ product }: Props) {
         />
 
 
+
+
+
         <div className="relative z-10">
 
 
+
+
+
           <div className="flex items-center gap-3">
+
+
 
             <div
               className="
@@ -62,30 +163,49 @@ export default function ProductTabs({ product }: Props) {
               text-lime-400
               "
             >
+
               <Lock size={24}/>
+
             </div>
+
+
+
 
 
             <div>
 
+
               <h2 className="text-4xl font-black">
-                Product Details
+
+                {text.title}
+
               </h2>
 
+
+
               <p className="mt-1 text-zinc-500">
-                Everything you need to know
+
+                {text.subtitle}
+
               </p>
+
 
             </div>
 
+
           </div>
+
+
+
+
 
 
 
           <div className="mt-12 grid gap-12 lg:grid-cols-2">
 
 
-            {/* Description */}
+
+
 
             <div
               className="
@@ -97,21 +217,28 @@ export default function ProductTabs({ product }: Props) {
               "
             >
 
+
+
               <h3 className="text-2xl font-bold">
-                Description
+
+                {text.description}
+
               </h3>
 
 
-              <p
-                className="
-                mt-5
-                leading-8
-                text-zinc-400
-                "
-              >
-                {product.description ||
-                  "Premium Apple ID ready for instant delivery."}
+
+
+
+              <p className="mt-5 leading-8 text-zinc-400">
+
+                {product.description || text.defaultDescription}
+
               </p>
+
+
+
+
+
 
 
               <div
@@ -127,58 +254,138 @@ export default function ProductTabs({ product }: Props) {
                 "
               >
 
-                ✓ Verified account  
+                ✓ {text.verified}
+
                 <br />
-                ✓ Instant delivery  
+
+                ✓ {text.instant}
+
                 <br />
-                ✓ Premium quality  
+
+                ✓ {text.quality}
+
 
               </div>
 
 
+
             </div>
 
 
 
-            {/* Features */}
+
+
+
+
 
             <div className="space-y-5">
 
+
               <Feature
+
                 icon={<ShieldCheck size={24}/>}
-                title="Secure Account"
-                text="All Apple IDs are verified before delivery."
+
+                title={
+                  language === "ar"
+                    ? "حساب آمن"
+                    : language === "zh"
+                    ? "安全账户"
+                    : "Secure Account"
+                }
+
+                text={
+                  language === "ar"
+                    ? "يتم التحقق من جميع الحسابات قبل التسليم."
+                    : language === "zh"
+                    ? "所有 Apple ID 在交付前都会验证。"
+                    : "All Apple IDs are verified before delivery."
+                }
+
               />
 
 
+
+
+
               <Feature
+
                 icon={<Truck size={24}/>}
-                title="Instant Delivery"
-                text="Receive your account immediately after payment."
+
+                title={
+                  language === "ar"
+                    ? "تسليم فوري"
+                    : language === "zh"
+                    ? "即时交付"
+                    : "Instant Delivery"
+                }
+
+                text={
+                  language === "ar"
+                    ? "استلم حسابك مباشرة بعد الدفع."
+                    : language === "zh"
+                    ? "付款后立即收到您的账户。"
+                    : "Receive your account immediately after payment."
+                }
+
               />
+
+
+
 
 
               <Feature
+
                 icon={<RefreshCcw size={24}/>}
-                title="Replacement Guarantee"
-                text="Replacement available if there is any issue."
+
+                title={
+                  language === "ar"
+                    ? "ضمان الاستبدال"
+                    : language === "zh"
+                    ? "更换保证"
+                    : "Replacement Guarantee"
+                }
+
+                text={
+                  language === "ar"
+                    ? "يتوفر الاستبدال إذا حدثت أي مشكلة."
+                    : language === "zh"
+                    ? "如果出现问题，可以更换。"
+                    : "Replacement available if there is any issue."
+                }
+
               />
+
 
 
             </div>
+
+
+
 
 
           </div>
 
 
+
+
+
         </div>
+
+
 
 
       </div>
 
+
+
     </section>
+
   );
+
 }
+
+
+
 
 
 
@@ -191,6 +398,7 @@ function Feature({
   title: string;
   text: string;
 }) {
+
 
   return (
 
@@ -211,6 +419,7 @@ function Feature({
       "
     >
 
+
       <div
         className="
         flex
@@ -226,25 +435,36 @@ function Feature({
         group-hover:bg-lime-400/20
         "
       >
+
         {icon}
+
       </div>
+
+
 
 
       <div>
 
         <h4 className="text-lg font-bold">
+
           {title}
+
         </h4>
 
 
         <p className="mt-2 text-sm leading-6 text-zinc-400">
+
           {text}
+
         </p>
 
+
       </div>
+
 
 
     </div>
 
   );
+
 }
