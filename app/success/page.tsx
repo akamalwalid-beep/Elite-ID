@@ -3,30 +3,24 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Copy, CheckCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 
 import { useLanguage } from "@/context/LanguageContext";
 
 
-export default function SuccessPage() {
-
+function SuccessContent() {
 
   const searchParams = useSearchParams();
 
   const id = searchParams.get("id");
 
-
   const { language } = useLanguage();
-
 
   const [copied, setCopied] = useState(false);
 
 
 
-
-
   const text = {
-
 
     title:
       language === "ar"
@@ -34,8 +28,6 @@ export default function SuccessPage() {
         : language === "zh"
         ? "订单创建成功"
         : "Order Created",
-
-
 
 
     desc:
@@ -46,16 +38,12 @@ export default function SuccessPage() {
         : "Your order has been received successfully.",
 
 
-
-
     order:
       language === "ar"
         ? "رقم الطلب"
         : language === "zh"
         ? "订单编号"
         : "Order Number",
-
-
 
 
     copy:
@@ -66,16 +54,12 @@ export default function SuccessPage() {
         : "Copy",
 
 
-
-
     copied:
       language === "ar"
         ? "تم النسخ"
         : language === "zh"
         ? "已复制"
         : "Copied",
-
-
 
 
     payment:
@@ -86,16 +70,12 @@ export default function SuccessPage() {
         : "Please complete your payment using the selected method.",
 
 
-
-
     home:
       language === "ar"
         ? "العودة للرئيسية"
         : language === "zh"
         ? "返回首页"
         : "Back To Home",
-
-
 
 
     products:
@@ -110,15 +90,11 @@ export default function SuccessPage() {
 
 
 
-
-
   function copyOrder(){
 
     if(!id) return;
 
-
     navigator.clipboard.writeText(id);
-
 
     setCopied(true);
 
@@ -134,12 +110,7 @@ export default function SuccessPage() {
 
 
 
-
-
-
-
   return (
-
 
     <main
 
@@ -156,7 +127,6 @@ export default function SuccessPage() {
       "
 
     >
-
 
 
 
@@ -179,7 +149,6 @@ export default function SuccessPage() {
       >
 
 
-
         <div
           className="
           absolute
@@ -195,18 +164,13 @@ export default function SuccessPage() {
 
 
 
-
-
         <div className="relative z-10">
-
 
 
           <CheckCircle
             size={90}
             className="mx-auto text-lime-400"
           />
-
-
 
 
 
@@ -218,16 +182,11 @@ export default function SuccessPage() {
 
 
 
-
-
           <p className="mt-5 text-zinc-400">
 
             {text.desc}
 
           </p>
-
-
-
 
 
 
@@ -251,7 +210,6 @@ export default function SuccessPage() {
                 {text.order}
 
               </p>
-
 
 
 
@@ -284,12 +242,10 @@ export default function SuccessPage() {
 
                 >
 
-                  {copied
-
+                  {
+                    copied
                     ? <CheckCircle size={20}/>
-
                     : <Copy size={20}/>
-
                   }
 
 
@@ -297,7 +253,6 @@ export default function SuccessPage() {
 
 
               </div>
-
 
 
 
@@ -318,17 +273,11 @@ export default function SuccessPage() {
 
 
 
-
-
-
-
           <p className="mt-8 text-zinc-500">
 
             {text.payment}
 
           </p>
-
-
 
 
 
@@ -396,7 +345,6 @@ export default function SuccessPage() {
 
 
 
-
         </div>
 
 
@@ -407,6 +355,35 @@ export default function SuccessPage() {
 
     </main>
 
+  );
+
+}
+
+
+
+
+
+export default function SuccessPage(){
+
+  return (
+
+    <Suspense
+
+      fallback={
+
+        <main className="flex min-h-screen items-center justify-center bg-[#090909] text-white">
+
+          Loading...
+
+        </main>
+
+      }
+
+    >
+
+      <SuccessContent />
+
+    </Suspense>
 
   );
 
