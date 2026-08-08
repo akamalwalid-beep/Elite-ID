@@ -8,27 +8,20 @@ type Props = {
   views: string;
 };
 
-
 export default function ProductsHeader({
   count,
   countries,
   views,
 }: Props) {
-
-
   const { language } = useLanguage();
 
-
-
   const translations = {
-
     badge:
       language === "ar"
         ? "المتجر المميز"
         : language === "zh"
         ? "高级商店"
         : "PREMIUM STORE",
-
 
     title:
       language === "ar"
@@ -37,14 +30,12 @@ export default function ProductsHeader({
         ? "高级 Apple ID"
         : "Premium Apple IDs",
 
-
     description:
       language === "ar"
         ? "حسابات Apple عالية الجودة لكل دولة مع توصيل فوري ودفع آمن ودعم احترافي."
         : language === "zh"
         ? "适用于各个国家的高质量 Apple ID，快速交付、安全支付和专业支持。"
         : "High-quality Apple IDs for every country with instant delivery, secure payment and professional support.",
-
 
     products:
       language === "ar"
@@ -53,15 +44,6 @@ export default function ProductsHeader({
         ? "产品"
         : "Products",
 
-
-    countries:
-      language === "ar"
-        ? "الدول"
-        : language === "zh"
-        ? "国家"
-        : "Countries",
-
-
     views:
       language === "ar"
         ? "المشاهدات"
@@ -69,26 +51,17 @@ export default function ProductsHeader({
         ? "浏览量"
         : "Views",
 
-
     rating:
       language === "ar"
         ? "متوسط التقييم"
         : language === "zh"
         ? "平均评分"
         : "Average Rating",
-
   };
 
-
-
-
   return (
-
     <>
-
       <div className="text-center">
-
-
         <span
           className="
           rounded-full
@@ -102,22 +75,12 @@ export default function ProductsHeader({
           text-lime-400
           "
         >
-
           {translations.badge}
-
         </span>
 
-
-
-
         <h2 className="mt-8 text-6xl font-black">
-
           {translations.title}
-
         </h2>
-
-
-
 
         <p
           className="
@@ -129,18 +92,9 @@ export default function ProductsHeader({
           text-zinc-400
           "
         >
-
           {translations.description}
-
         </p>
-
-
-
       </div>
-
-
-
-
 
       <div
         className="
@@ -150,45 +104,27 @@ export default function ProductsHeader({
         max-w-6xl
         grid-cols-2
         gap-6
-        lg:grid-cols-4
+        lg:grid-cols-3
         "
       >
-
-
         <StatCard
           value={count}
           label={translations.products}
         />
-
-
-        <StatCard
-          value={countries}
-          label={translations.countries}
-        />
-
 
         <StatCard
           value={views}
           label={translations.views}
         />
 
-
         <StatCard
           value="4.9"
           label={translations.rating}
         />
-
-
       </div>
-
-
     </>
-
   );
 }
-
-
-
 
 function StatCard({
   value,
@@ -197,10 +133,7 @@ function StatCard({
   value: string | number;
   label: string;
 }) {
-
-
   return (
-
     <div
       className="
       rounded-3xl
@@ -212,23 +145,13 @@ function StatCard({
       backdrop-blur-xl
       "
     >
-
       <h3 className="text-4xl font-black text-lime-400">
-
         {value}
-
       </h3>
 
-
       <p className="mt-3 text-zinc-400">
-
         {label}
-
       </p>
-
-
     </div>
-
   );
-
 }

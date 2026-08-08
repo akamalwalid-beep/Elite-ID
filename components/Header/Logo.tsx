@@ -7,47 +7,21 @@ export default function Logo() {
   return (
     <Link
       href="/"
-      className="
-        group
-        relative
-        flex
-        items-center
-        transition-all
-        duration-500
-      "
+      className="group flex h-[72px] w-[120px] items-center justify-center overflow-hidden"
     >
-      {/* Glow */}
-
-      <div
-        className="
-          absolute
-          inset-0
-          rounded-full
-          bg-lime-400/0
-          blur-2xl
-          transition-all
-          duration-500
-          group-hover:bg-lime-400/15
-        "
-      />
-
-      {/* Logo */}
-
       <Image
-        src="/images/logo.png"
+        src="/images/new-logo1.png"
         alt="Elite ID"
-        width={220}
-        height={70}
+        width={120}
+        height={80}
         priority
         className="
-          relative
-          z-10
           h-auto
-          w-[210px]
+          w-[120px]
+          object-contain
           transition-all
-          duration-500
+          duration-300
           group-hover:scale-105
-          group-hover:drop-shadow-[0_0_35px_rgba(132,255,0,.65)]
         "
       />
     </Link>
