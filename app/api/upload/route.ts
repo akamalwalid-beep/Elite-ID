@@ -9,29 +9,8 @@ export async function POST(request: Request) {
 
     if (!file) {
       return NextResponse.json(
-        { message: "No file uploaded." },
-        { status: 400 }
-      );
-    }
-
-    const fileName = file.name.toLowerCase();
-
-    const isImage = file.type.startsWith("image/");
-
-    const isXlsx =
-      file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-      fileName.endsWith(".xlsx");
-
-    const isCsv =
-      file.type === "text/csv" ||
-      file.type === "application/csv" ||
-      fileName.endsWith(".csv");
-
-    if (!isImage && !isXlsx && !isCsv) {
-      return NextResponse.json(
         {
-          message: "Only images, XLSX and CSV files are allowed.",
+          message: "No file uploaded.",
         },
         {
           status: 400,
@@ -39,25 +18,47 @@ export async function POST(request: Request) {
       );
     }
 
-    const folder = isImage ? "products" : "product-files";
+    if (!file.type.startsWith("image/")) {
+      return NextResponse.json(
+        {
+          message: "Only image files are allowed.",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
 
-    const safeFileName = file.name
-      .replace(/\s+/g, "-")
-      .replace(/[^a-zA-Z0-9._-]/g, "");
+    const fileName = `products/${Date.now()}-${file.name.replace(
+      /\s+/g,
+      "-"
+    )}`;
 
-    const filePath = `${folder}/${Date.now()}-${safeFileName}`;
+    const token = process.env.IMG_BLOB_READ_WRITE_TOKEN;
 
-    const blob = await put(filePath, file, {
+    if (!token) {
+      console.error("IMG_BLOB_READ_WRITE_TOKEN is missing");
+
+      return NextResponse.json(
+        {
+          message: "Blob storage is not configured.",
+        },
+        {
+          status: 500,
+        }
+      );
+    }
+
+    const blob = await put(fileName, file, {
       access: "public",
+      token,
     });
 
     return NextResponse.json({
       url: blob.url,
-      fileName: file.name,
-      fileType: file.type,
     });
   } catch (error) {
-    console.error("Upload error:", error);
+    console.error("IMAGE UPLOAD ERROR:", error);
 
     return NextResponse.json(
       {
