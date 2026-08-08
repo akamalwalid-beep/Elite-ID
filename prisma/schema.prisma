@@ -19,25 +19,30 @@ model Admin {
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
-  title       String
-  slug        String      @unique
-  country     String
-  price       Decimal     @db.Decimal(10, 2)
-  currency    String      @default("USDT")
-  image       String
-  description String?
-  stock       Int         @default(0)
-  views       Int         @default(0)
-  rating      Float       @default(5)
-  featured    Boolean     @default(false)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  bestSeller  Boolean     @default(false)
-  features    String[]    @default([])
-  rare        Boolean     @default(false)
-  topRated    Boolean     @default(false)
-  orderItems  OrderItem[]
+  id           Int         @id @default(autoincrement())
+  title        String
+  slug         String      @unique
+  country      String
+  price        Decimal     @db.Decimal(10, 2)
+  currency     String      @default("USDT")
+  image        String
+
+  workFileUrl  String?
+  workFileName String?
+  workFileType String?
+
+  description  String?
+  stock        Int         @default(0)
+  views        Int         @default(0)
+  rating       Float       @default(5)
+  featured     Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  bestSeller   Boolean     @default(false)
+  features     String[]    @default([])
+  rare         Boolean     @default(false)
+  topRated     Boolean     @default(false)
+  orderItems   OrderItem[]
 
   @@index([country])
   @@index([featured])
@@ -67,6 +72,7 @@ model OrderItem {
   price     Decimal  @db.Decimal(10, 2)
   quantity  Int
   createdAt DateTime @default(now())
+
   order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product  @relation(fields: [productId], references: [id])
 }
