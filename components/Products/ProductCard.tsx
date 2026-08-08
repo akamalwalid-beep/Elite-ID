@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check } from "lucide-react";
+import { Check, Zap } from "lucide-react";
 
 import { Product } from "../../types/product";
 import { useCart } from "../../context/CartContext";
@@ -13,224 +13,187 @@ import ProductStats from "./ProductStats";
 import ProductPrice from "./ProductPrice";
 import ProductActions from "./ProductActions";
 
-
 type ProductCardProps = Product;
 
 
+export default function ProductCard(
+  props: ProductCardProps
+) {
 
-export default function ProductCard(props: ProductCardProps) {
 
+const [isModalOpen,setIsModalOpen] =
+useState(false);
 
-  const { addToCart } = useCart();
 
+const [modalMode,setModalMode] =
+useState<"cart" | "buy">("cart");
 
-  const [isModalOpen, setIsModalOpen] =
-    useState(false);
 
+const { addToCart } = useCart();
 
 
-  function handleConfirm(quantity:number){
 
-    addToCart({
-      ...props,
-    });
 
-  }
+function handleConfirm(
+  quantity:number,
+  mode:"cart" | "buy"
+){
 
 
+for(let i = 0; i < quantity; i++){
 
+  addToCart(props);
 
+}
 
-  const inStock = props.stock > 0;
 
 
-  const premiumCard =
-    props.rare || props.bestSeller;
+if(mode === "buy"){
 
+  window.location.href="/cart";
 
+}
 
 
+}
 
-  return (
 
-    <>
 
-      <div
-        className={`
-        group
-        relative
-        flex
-        h-full
-        min-h-[760px]
-        flex-col
-        overflow-hidden
-        rounded-[32px]
-        border
-        transition-all
-        duration-500
-        hover:-translate-y-2
 
 
-        ${
-          premiumCard
+const inStock =
+props.stock > 0;
 
-          ?
 
-          `
-          border-yellow-400/40
-          bg-gradient-to-b
-          from-[#332707]
-          via-[#17120a]
-          to-[#090909]
-          shadow-[0_25px_80px_rgba(250,204,21,.2)]
-          `
 
-          :
+const premiumCard =
+props.rare || props.bestSeller;
 
-          `
-          border-zinc-800
-          bg-gradient-to-b
-          from-[#1b1b1b]
-          via-[#111111]
-          to-[#090909]
-          `
-        }
 
 
-        hover:border-lime-400/40
-        `}
-      >
+return (
 
+<>
 
 
+<div
 
 
-        <div
-          className="
-          absolute
-          -left-24
-          -top-24
-          h-72
-          w-72
-          rounded-full
-          bg-lime-400/10
-          blur-[120px]
-          opacity-0
-          transition-all
-          duration-700
-          group-hover:opacity-100
-          "
-        />
+className={`
 
+group
 
+relative
 
+flex
 
+h-full
 
+min-h-[760px]
 
-        <div className="relative z-10 flex h-full flex-col p-7">
+flex-col
 
+overflow-hidden
 
+rounded-[32px]
 
+border
 
+transition-all
 
-          <ProductHeader
+duration-500
 
-            title={props.title}
+hover:-translate-y-2
 
-            country={props.country}
 
-            featured={props.featured}
 
-            topRated={props.topRated}
+${
+premiumCard
 
-            bestSeller={props.bestSeller}
+?
 
-            rare={props.rare}
+`
 
-            views={props.views}
+border-yellow-400/40
 
-            image={props.image}
+bg-gradient-to-b
 
-          />
+from-[#332707]
 
+via-[#17120a]
 
+to-[#090909]
 
+shadow-[0_25px_80px_rgba(250,204,21,.2)]
 
+`
 
+:
 
+`
 
-          <div className="mt-6 min-h-[190px]">
+border-zinc-800
 
+bg-gradient-to-b
 
-            {
-              props.features &&
-              props.features.length > 0 && (
+from-[#1b1b1b]
 
-                <div
-                  className="
-                  rounded-2xl
-                  border
-                  border-white/10
-                  bg-black/20
-                  p-4
-                  "
-                >
+via-[#111111]
 
-                  <div className="space-y-2">
+to-[#090909]
 
-                    {
-                      props.features.map((feature)=>(
+`
 
-                        <div
-                          key={feature}
-                          className="
-                          flex
-                          items-center
-                          gap-2
-                          text-sm
-                          text-zinc-300
-                          "
-                        >
+}
 
-                          <Check
-                            size={16}
-                            className="text-lime-400"
-                          />
 
-                          {feature}
+hover:border-lime-400/40
 
-                        </div>
+`}
 
-                      ))
-                    }
 
-                  </div>
+>
 
-                </div>
 
-              )
-            }
 
 
-          </div>
 
+<a
 
+href={`/products/${props.id}`}
 
+className="
+absolute
+inset-0
+z-0
+"
 
+/>
 
 
 
-          <div className="mt-6">
 
 
-            <ProductStats
 
-              stock={props.stock}
 
-            />
+<div
 
+className="
+absolute
+-left-24
+-top-24
+h-72
+w-72
+rounded-full
+bg-lime-400/10
+blur-[120px]
+opacity-0
+transition-all
+duration-700
+group-hover:opacity-100
+"
 
-          </div>
+/>
 
 
 
@@ -238,74 +201,300 @@ export default function ProductCard(props: ProductCardProps) {
 
 
 
+<div
 
-          <div className="mt-8">
+className="
+relative
+z-10
+flex
+h-full
+flex-col
+p-7
+pointer-events-none
+"
 
+>
 
-            <ProductPrice
 
-              price={props.price}
 
-              currency={props.currency}
+<ProductHeader
 
-            />
+title={props.title}
 
+country={props.country}
 
-          </div>
+featured={props.featured ?? false}
 
+topRated={props.topRated ?? false}
 
+bestSeller={props.bestSeller ?? false}
 
+rare={props.rare ?? false}
 
+views={props.views}
 
+image={props.image}
 
+/>
 
-          <div className="mt-auto pt-10">
 
 
-            <ProductActions
 
-              id={props.id}
 
-              inStock={inStock}
 
-              onAddToCart={() => setIsModalOpen(true)}
 
-            />
+{
+props.features &&
+props.features.length > 0 && (
 
 
-          </div>
+<div
 
+className="
+mt-6
+rounded-2xl
+border
+border-white/10
+bg-black/20
+p-4
+"
 
+>
 
 
+<div className="space-y-2">
 
 
-        </div>
+{
+props.features.map((feature)=>(
 
 
-      </div>
+<div
 
+key={feature}
 
+className="
+flex
+items-center
+gap-2
+text-sm
+text-zinc-300
+"
 
+>
 
+<Check
 
+size={16}
 
+className="text-lime-400"
 
-      <AddToCartModal
+/>
 
-        product={props}
 
-        isOpen={isModalOpen}
+{feature}
 
-        onClose={() => setIsModalOpen(false)}
 
-        onConfirm={handleConfirm}
+</div>
 
-      />
 
+))
 
-    </>
+}
 
-  );
+
+</div>
+
+
+</div>
+
+
+)
+
+}
+
+
+
+
+
+
+
+<div className="mt-6">
+
+<ProductStats
+
+stock={props.stock}
+
+/>
+
+</div>
+
+
+
+
+
+
+
+<div className="mt-8">
+
+<ProductPrice
+
+price={props.price}
+
+currency={props.currency}
+
+/>
+
+</div>
+
+
+
+
+
+
+
+<div
+
+className="
+mt-auto
+pt-10
+pointer-events-auto
+"
+
+>
+
+
+<ProductActions
+
+id={props.id}
+
+inStock={inStock}
+
+onAddToCart={()=>{
+
+setModalMode("cart");
+
+setIsModalOpen(true);
+
+}}
+
+/>
+
+
+
+
+
+
+<button
+
+
+disabled={!inStock}
+
+
+onClick={()=>{
+
+setModalMode("buy");
+
+setIsModalOpen(true);
+
+}}
+
+
+
+className="
+
+mt-3
+
+flex
+
+w-full
+
+items-center
+
+justify-center
+
+gap-2
+
+rounded-2xl
+
+bg-lime-400
+
+py-4
+
+font-black
+
+text-black
+
+transition
+
+hover:scale-105
+
+disabled:bg-zinc-800
+
+disabled:text-zinc-500
+
+"
+
+
+>
+
+
+<Zap size={18}/>
+
+
+Buy Now
+
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<AddToCartModal
+
+
+product={props}
+
+
+isOpen={isModalOpen}
+
+
+mode={modalMode}
+
+
+onClose={()=>{
+
+setIsModalOpen(false);
+
+}}
+
+
+onConfirm={handleConfirm}
+
+
+/>
+
+
+
+</>
+
+);
 
 }

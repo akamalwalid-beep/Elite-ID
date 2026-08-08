@@ -10,8 +10,9 @@ import { useLanguage } from "@/context/LanguageContext";
 type AddToCartModalProps = {
   product: Product | null;
   isOpen: boolean;
+  mode: "cart" | "buy";
   onClose: () => void;
-  onConfirm: (quantity: number) => void;
+  onConfirm: (quantity: number, mode: "cart" | "buy") => void;
 };
 
 
@@ -19,6 +20,7 @@ type AddToCartModalProps = {
 export default function AddToCartModal({
   product,
   isOpen,
+  mode,
   onClose,
   onConfirm,
 }: AddToCartModalProps) {
@@ -502,7 +504,7 @@ export default function AddToCartModal({
 
               onClick={()=>{
 
-                onConfirm(qty);
+                onConfirm(qty, mode);
 
                 setQuantity("1");
 
