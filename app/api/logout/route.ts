@@ -9,8 +9,10 @@ export async function POST() {
     name: "elite-admin",
     value: "",
     httpOnly: true,
-    expires: new Date(0),
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
     path: "/",
+    maxAge: 0,
   });
 
   return response;

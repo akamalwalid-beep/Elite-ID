@@ -1,43 +1,70 @@
 import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 
+const MAX_FILE_SIZE = 25 * 1024 * 1024;
+
+const ALLOWED_EXTENSIONS = [
+  "csv",
+  "xls",
+  "xlsx",
+];
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
+
     const file = formData.get("file");
 
     if (!(file instanceof File)) {
       return NextResponse.json(
         {
           success: false,
-          message: "No file uploaded.",
+          message: "No work file uploaded.",
         },
         { status: 400 }
       );
     }
 
-    if (!file.type.startsWith("image/")) {
+    const extension =
+      file.name
+        .toLowerCase()
+        .split(".")
+        .pop() || "";
+
+    if (!ALLOWED_EXTENSIONS.includes(extension)) {
       return NextResponse.json(
         {
           success: false,
-          message: "Only image files are allowed.",
+          message:
+            "Only CSV, XLS, and XLSX files are allowed.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Work file size must be 25MB or less.",
         },
         { status: 400 }
       );
     }
 
     const token =
-      process.env.IMG_BLOB_READ_WRITE_TOKEN;
+      process.env.BLOB_READ_WRITE_TOKEN;
 
     const storeId =
-      process.env.IMG_BLOB_STORE_ID;
+      process.env.BLOB_STORE_ID;
 
     if (!token) {
       return NextResponse.json(
         {
           success: false,
           message:
-            "IMG_BLOB_READ_WRITE_TOKEN is missing.",
+            "BLOB_READ_WRITE_TOKEN is missing.",
         },
         { status: 500 }
       );
@@ -48,66 +75,57 @@ export async function POST(request: Request) {
         {
           success: false,
           message:
-            "IMG_BLOB_STORE_ID is missing.",
+            "BLOB_STORE_ID is missing.",
         },
         { status: 500 }
       );
     }
 
-    const extension =
-      file.name
-        .toLowerCase()
-        .split(".")
-        .pop() || "";
-
-    const allowedExtensions = [
-      "jpg",
-      "jpeg",
-      "png",
-      "webp",
-      "gif",
-      "avif",
-    ];
-
-    if (!allowedExtensions.includes(extension)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Unsupported image format.",
-        },
-        { status: 400 }
-      );
-    }
+    /*
+     * Never send the original filename directly
+     * to Blob because it may contain Unicode characters.
+     */
 
     const fileName =
-      `products/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+      `work-files/${Date.now()}-${crypto.randomUUID()}.${extension}`;
 
     const buffer = Buffer.from(
       await file.arrayBuffer()
     );
 
-    console.log("IMAGE UPLOAD START");
-    console.log("Store ID:", storeId);
-    console.log("Token exists:", Boolean(token));
-    console.log("File type:", file.type);
-    console.log("File size:", file.size);
-    console.log("Path:", fileName);
+    /*
+     * Work files are PRIVATE.
+     *
+     * Images use the public image store.
+     * Work files use the private main Blob store.
+     */
 
     const blob = await put(
       fileName,
       buffer,
       {
-        access: "public",
+        access: "private",
         token,
         storeId,
-        contentType: file.type,
+        contentType:
+          file.type ||
+          "application/octet-stream",
         addRandomSuffix: false,
       }
     );
 
     console.log(
-      "IMAGE UPLOAD SUCCESS:",
-      blob.url
+      "WORK FILE UPLOAD SUCCESS"
+    );
+
+    console.log(
+      "Store:",
+      storeId
+    );
+
+    console.log(
+      "File:",
+      fileName
     );
 
     return NextResponse.json(
@@ -115,6 +133,7 @@ export async function POST(request: Request) {
         success: true,
         url: blob.url,
         fileName: file.name,
+        fileType: extension,
       },
       { status: 200 }
     );
@@ -122,21 +141,26 @@ export async function POST(request: Request) {
     console.error(
       "=============================="
     );
+
     console.error(
-      "IMAGE UPLOAD ERROR"
+      "WORK FILE UPLOAD ERROR"
     );
+
     console.error(
       "Message:",
       error?.message
     );
+
     console.error(
       "Name:",
       error?.name
     );
+
     console.error(
       "Stack:",
       error?.stack
     );
+
     console.error(
       "=============================="
     );
@@ -146,7 +170,7 @@ export async function POST(request: Request) {
         success: false,
         message:
           error?.message ||
-          "Image upload failed.",
+          "Work file upload failed.",
       },
       { status: 500 }
     );
